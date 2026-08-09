@@ -8,8 +8,9 @@ class Notification:
         self.is_read = is_read
 
     def send(self):
-        pass
+        print(f"Notification sent to {self.recipient}: {self.message}")
 
     def mark_as_read(self):
-       pass
+        self.is_read = True
+       
        
