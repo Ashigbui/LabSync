@@ -11,7 +11,19 @@ class MaintenanceRecord:
         self.cost = cost
 
     def start_maintenance(self):
-        pass
+       self.status = "In Progress"
+
+    def complete_maintenance(self):
+        self.status = "Completed"
+
+    def get_record(self):
+        return 
+            "equipment_id": self.equipment_id,
+            "problem": self.problem,
+            "technician": self.technician,
+            "status": self.status
+        
+        
 
     def update_status(self):
         pass
