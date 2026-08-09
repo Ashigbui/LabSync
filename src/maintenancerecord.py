@@ -16,11 +16,11 @@ class MaintenanceRecord:
     def complete_maintenance(self):
         self.status = "Completed"
 
-    def get_record(self):
+    def display_record(self):
         return 
-            "equipment_id": self.equipment_id,
-            "problem": self.problem,
-            "technician": self.technician,
+            "equipment_id": self.equipment,
+            "problem": self.fault_description,
+            "technician": self.technician_name,
             "status": self.status
         
         
