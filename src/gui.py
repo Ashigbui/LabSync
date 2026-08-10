@@ -1,8 +1,18 @@
 import tkinter as tk
 
 
+equipment_list = [
+    "Microscope — Available",
+    "Centrifuge — Available",
+    "Test tubes — In use"
+]
+
+
 def show_equipment():
-    message_label.config(text="Equipment section selected")
+    equipment_box.delete(0, tk.END)
+
+    for equipment in equipment_list:
+        equipment_box.insert(tk.END, equipment)
 
 
 window = tk.Tk()
@@ -16,23 +26,19 @@ heading = tk.Label(
 )
 heading.pack(pady=30)
 
-description = tk.Label(
-    window,
-    text="Manage laboratory equipment, bookings, and returns."
-)
-description.pack(pady=10)
-
 equipment_button = tk.Button(
     window,
     text="View Equipment",
     command=show_equipment
 )
-equipment_button.pack(pady=20)
+equipment_button.pack(pady=10)
 
-message_label = tk.Label(
+equipment_box = tk.Listbox(
     window,
-    text=""
+    width=50,
+    height=10,
+    font=("Arial", 12)
 )
-message_label.pack()
+equipment_box.pack(pady=20)
 
 window.mainloop()
