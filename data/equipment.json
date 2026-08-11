@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "EQ001",
+    "name": "Microscope",
+    "status": "Available"
+  },
+  {
+    "id": "EQ002",
+    "name": "Centrifuge",
+    "status": "Available"
+  }
+]
