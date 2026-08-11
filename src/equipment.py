@@ -1,84 +1,172 @@
-class Equipment:
-    VALID_STATUSES = {"available", "unavailable", "damaged", "maintenance"}
+import json
+import tkinter as tk
+from pathlib import Path
+from tkinter import messagebox
 
-    def __init__(self, equipment_id, name, category, laboratory, quantity, available_quantity, status, safety_instructions, maintenance_history=None, booking_history=None):
-        self.equipment_id = equipment_id
-        self.name = name
-        self.category = category
-        self.laboratory = laboratory
-        self.quantity = quantity
-        self.available_quantity = available_quantity
-        self.status = status
-        self.safety_instructions = safety_instructions
-        self.maintenance_history = maintenance_history or []
-        self.booking_history = booking_history or []
-        self.damage_history = []
+from equipment import Equipment
 
-    def check_availability(self):
-        return self.status == "available" and self.available_quantity > 0
 
-    def update_status(self, new_status):
-        if new_status not in self.VALID_STATUSES:
-            return "Invalid status. Use available, unavailable, damaged, or maintenance."
+PROJECT_FOLDER = Path(__file__).resolve().parent.parent
+EQUIPMENT_FILE = PROJECT_FOLDER / "data" / "equipment.json"
 
-        self.status = new_status
-        return f"Status updated to {new_status}."
 
-    def reduce_available_quantity(self, amount):
-        if amount <= 0:
-            return "Amount must be greater than zero."
+def read_equipment():
+    try:
+        with open(EQUIPMENT_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
 
-        if amount > self.available_quantity:
-            return "Not enough equipment is available."
 
-        self.available_quantity -= amount
+def save_equipment(equipment_list):
+    with open(EQUIPMENT_FILE, "w", encoding="utf-8") as file:
+        json.dump(equipment_list, file, indent=4)
 
-        if self.available_quantity == 0:
-            self.status = "unavailable"
 
-        return f"Quantity reduced by {amount}. Remaining quantity: {self.available_quantity}."
+def show_equipment():
+    equipment_box.delete(0, tk.END)
 
-    def increase_available_quantity(self, amount):
-        if amount <= 0:
-            return "Amount must be greater than zero."
+    equipment_list = read_equipment()
 
-        if self.available_quantity + amount > self.quantity:
-            return "Available quantity cannot exceed total quantity."
+    if not equipment_list:
+        equipment_box.insert(tk.END, "No equipment has been added.")
+        return
 
-        self.available_quantity += amount
+    for equipment in equipment_list:
+        # Supports both the old "id" and new "equipment_id" format
+        equipment_id = equipment.get(
+            "equipment_id",
+            equipment.get("id", "")
+        )
 
-        if self.available_quantity > 0:
-            self.status = "available"
+        name = equipment.get("name", "")
+        category = equipment.get("category", "Not specified")
+        quantity = equipment.get("quantity", 1)
+        status = equipment.get("status", "available")
 
-        return f"Quantity increased by {amount}. Available quantity: {self.available_quantity}."
+        equipment_box.insert(
+            tk.END,
+            f"{equipment_id} — {name} — {category} — "
+            f"Quantity: {quantity} — {status}"
+        )
 
-    def update_safety_instructions(self, new_instructions):
-        if not new_instructions:
-            return "Safety instructions cannot be empty."
 
-        self.safety_instructions = new_instructions
-        return "Safety instructions updated successfully."
+def add_equipment():
+    equipment_id = id_entry.get().strip()
+    name = name_entry.get().strip()
+    category = category_entry.get().strip()
+    quantity_text = quantity_entry.get().strip()
 
-    def record_damage(self, damage_details):
-        if not damage_details:
-            return "Damage details are required."
+    if not equipment_id or not name or not category or not quantity_text:
+        messagebox.showerror(
+            "Error",
+            "Please complete every field."
+        )
+        return
 
-        damage_record = {"details": damage_details, "status": "reported"}
-        self.damage_history.append(damage_record)
-        self.status = "damaged"
+    try:
+        quantity = int(quantity_text)
 
-        return "Damage recorded successfully."
+        if quantity <= 0:
+            raise ValueError
 
-    def send_for_maintenance(self, maintenance_details):
-        if not maintenance_details:
-            return "Maintenance details are required."
+    except ValueError:
+        messagebox.showerror(
+            "Error",
+            "Quantity must be a positive whole number."
+        )
+        return
 
-        maintenance_record = {"details": maintenance_details, "status": "in progress"}
-        self.maintenance_history.append(maintenance_record)
-        self.status = "maintenance"
-        self.available_quantity = 0
+    equipment_list = read_equipment()
 
-        return "Equipment sent for maintenance."
+    for saved_equipment in equipment_list:
+        saved_id = saved_equipment.get(
+            "equipment_id",
+            saved_equipment.get("id", "")
+        )
 
-    def display_details(self):
-        return {"equipment_id": self.equipment_id, "name": self.name, "category": self.category, "laboratory": self.laboratory, "quantity": self.quantity, "available_quantity": self.available_quantity, "status": self.status, "safety_instructions": self.safety_instructions, "maintenance_history": self.maintenance_history, "booking_history": self.booking_history, "damage_history": self.damage_history}
+        if saved_id.lower() == equipment_id.lower():
+            messagebox.showerror(
+                "Error",
+                "That equipment ID already exists."
+            )
+            return
+
+    new_equipment = Equipment(
+        equipment_id=equipment_id,
+        name=name,
+        category=category,
+        laboratory="Main Laboratory",
+        quantity=quantity,
+        available_quantity=quantity,
+        status="available",
+        safety_instructions="Follow laboratory safety rules."
+    )
+
+    equipment_list.append(new_equipment.display_details())
+    save_equipment(equipment_list)
+
+    id_entry.delete(0, tk.END)
+    name_entry.delete(0, tk.END)
+    category_entry.delete(0, tk.END)
+    quantity_entry.delete(0, tk.END)
+
+    show_equipment()
+
+    messagebox.showinfo(
+        "Success",
+        "Equipment added successfully."
+    )
+
+
+window = tk.Tk()
+window.title("LabSync")
+window.geometry("850x650")
+
+heading = tk.Label(
+    window,
+    text="LabSync Laboratory Management System",
+    font=("Arial", 20, "bold")
+)
+heading.pack(pady=20)
+
+tk.Label(window, text="Equipment ID").pack()
+id_entry = tk.Entry(window, width=35)
+id_entry.pack(pady=5)
+
+tk.Label(window, text="Equipment name").pack()
+name_entry = tk.Entry(window, width=35)
+name_entry.pack(pady=5)
+
+tk.Label(window, text="Category").pack()
+category_entry = tk.Entry(window, width=35)
+category_entry.pack(pady=5)
+
+tk.Label(window, text="Quantity").pack()
+quantity_entry = tk.Entry(window, width=35)
+quantity_entry.pack(pady=5)
+
+add_button = tk.Button(
+    window,
+    text="Add Equipment",
+    command=add_equipment
+)
+add_button.pack(pady=10)
+
+view_button = tk.Button(
+    window,
+    text="View Equipment",
+    command=show_equipment
+)
+view_button.pack(pady=5)
+
+equipment_box = tk.Listbox(
+    window,
+    width=85,
+    height=10,
+    font=("Arial", 12)
+)
+equipment_box.pack(pady=15)
+
+window.mainloop()
+     
