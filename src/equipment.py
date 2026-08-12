@@ -25,7 +25,6 @@ def save_equipment(equipment_list):
 
 def show_equipment():
     equipment_box.delete(0, tk.END)
-
     equipment_list = read_equipment()
 
     if not equipment_list:
@@ -33,12 +32,10 @@ def show_equipment():
         return
 
     for equipment in equipment_list:
-        # Supports both the old "id" and new "equipment_id" format
         equipment_id = equipment.get(
             "equipment_id",
             equipment.get("id", "")
         )
-
         name = equipment.get("name", "")
         category = equipment.get("category", "Not specified")
         quantity = equipment.get("quantity", 1)
@@ -58,10 +55,7 @@ def add_equipment():
     quantity_text = quantity_entry.get().strip()
 
     if not equipment_id or not name or not category or not quantity_text:
-        messagebox.showerror(
-            "Error",
-            "Please complete every field."
-        )
+        messagebox.showerror("Error", "Please complete every field.")
         return
 
     try:
@@ -69,7 +63,6 @@ def add_equipment():
 
         if quantity <= 0:
             raise ValueError
-
     except ValueError:
         messagebox.showerror(
             "Error",
@@ -112,11 +105,7 @@ def add_equipment():
     quantity_entry.delete(0, tk.END)
 
     show_equipment()
-
-    messagebox.showinfo(
-        "Success",
-        "Equipment added successfully."
-    )
+    messagebox.showinfo("Success", "Equipment added successfully.")
 
 
 window = tk.Tk()
@@ -169,4 +158,3 @@ equipment_box = tk.Listbox(
 equipment_box.pack(pady=15)
 
 window.mainloop()
-     
