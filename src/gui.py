@@ -200,6 +200,13 @@ view_button = tk.Button(
 )
 view_button.pack(pady=5)
 
+delete_button = tk.Button(
+    window,
+    text="Delete Equipment",
+    command=delete_equipment
+)
+delete_button.pack(pady=5)
+
 equipment_box = tk.Listbox(
     window,
     width=85,
