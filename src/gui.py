@@ -50,7 +50,47 @@ def show_equipment():
             f"Quantity: {quantity} — {status}"
         )
 
+def delete_equipment():
+    selected = equipment_box.curselection()
 
+    if not selected:
+        messagebox.showerror(
+            "Error",
+            "Please select equipment from the list first."
+        )
+        return
+
+    selected_index = selected[0]
+    equipment_list = read_equipment()
+
+    if selected_index >= len(equipment_list):
+        messagebox.showerror("Error", "Please select valid equipment.")
+        return
+
+    equipment = equipment_list[selected_index]
+    equipment_id = equipment.get(
+        "equipment_id",
+        equipment.get("id", "")
+    )
+    equipment_name = equipment.get("name", "")
+
+    confirmed = messagebox.askyesno(
+        "Confirm deletion",
+        f"Delete {equipment_id} — {equipment_name}?"
+    )
+
+    if not confirmed:
+        return
+
+    equipment_list.pop(selected_index)
+    save_equipment(equipment_list)
+    show_equipment()
+
+    messagebox.showinfo(
+        "Success",
+        "Equipment deleted successfully."
+    )
+    
 def add_equipment():
     equipment_id = id_entry.get().strip()
     name = name_entry.get().strip()
