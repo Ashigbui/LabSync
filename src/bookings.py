@@ -1,7 +1,10 @@
 import datetime
 
+
 class Booking:
-    def__init__(self, booking_id, student, equipment, booking_date, start_time, return_time, purpose):
+    VALID_STATUSES = {"Pending", "Approved", "Denied", "Cancelled", "Active", "Returned", "Overdue"}
+
+    def __init__(self, booking_id, student, equipment, booking_date, start_time, return_time, purpose, quantity=1, status="Pending", admin_comment=""):
         self.__booking_id = booking_id
         self.__student = student
         self.__equipment = equipment
@@ -9,68 +12,73 @@ class Booking:
         self.__start_time = start_time
         self.__return_time = return_time
         self.__purpose = purpose
+        self.__quantity = quantity
+        self.__status = status
+        self.__admin_comment = admin_comment
+
+    def get_status(self):
+        return self.__status
+
+    def get_booking_id(self):
+        return self.__booking_id
+
+    def submit_request(self):
         self.__status = "Pending"
-        self.__admin comment = ""
+        return f"Booking {self.__booking_id} was submitted by {self.__student}."
 
-     def get_status(self):
-         return self.__status
+    def approve(self, comment=""):
+        self.__status = "Approved"
+        self.__admin_comment = comment
+        return f"Booking {self.__booking_id} was approved."
 
-     def get_booking_id(self):
-         return self.__booking_id
+    def deny(self, comment=""):
+        self.__status = "Denied"
+        self.__admin_comment = comment
+        return f"Booking {self.__booking_id} was denied."
 
-     def submit_request(self):
-         self.__status = "Pending"
-         print(f"Booking {self.__booking_id} has been submitted for {self.__equipment} by {self.__student}>")
+    def cancel(self):
+        if self.__status in {"Returned", "Cancelled"}:
+            return "This booking cannot be cancelled."
 
-     def approve(self, comment=""):
-         self.__status = "Approved"
-         self.__admin_comment = comment
-         print(f"Booking {self.__booking_id} has been approved. {comment}")
+        self.__status = "Cancelled"
+        return f"Booking {self.__booking_id} was cancelled."
 
-     def deny(self, comment=""):
-         self.__status = "Denied"
-         self.__admin_comment = comment
-         print(f"Booking {self.__booking_id} has been denied. {comment}")
+    def mark_active(self):
+        if self.__status != "Approved":
+            return "Booking must be approved before it becomes active."
 
-     def cancel(self):
-         self.__status = "Cancelled"
-         print(f"Booking {self.__booking_id} has been cancelled.")
-
-     def mark_active(self):
-         if self.__status == "Approved":
-             self.__status = "Active"
-             print(f"Booking {self.__booking_id} is active.")
-         else:
-             print("Booking must be approved before itis active")
-             
+        self.__status = "Active"
+        return f"Booking {self.__booking_id} is active."
 
     def mark_returned(self):
-         if self.__status == "Active":
-            self.__status = "Returned"
-            print(f"Equipment {self.__equipment} returned for booking {self.__booking_id}.")
-        else:
-            print("Booking must be active before returning equipment.")
+        if self.__status not in {"Active", "Overdue"}:
+            return "Booking must be active before equipment is returned."
+
+        self.__status = "Returned"
+        return f"Equipment for booking {self.__booking_id} was returned."
 
     def check_overdue(self):
-        today = datetime.date.today()
-        if self.__status == "Active" and today > self.__return_time:
-            self.__status = "Overdue"
-            print(f"Booking {self.__booking_id} is overdue!")
+        if isinstance(self.__return_time, str):
+            return_date = datetime.date.fromisoformat(self.__return_time)
         else:
-            print(f"Booking {self.__booking_id} is not overdue.")
+            return_date = self.__return_time
+
+        if self.__status == "Active" and datetime.date.today() > return_date:
+            self.__status = "Overdue"
+            return True
+
+        return False
 
     def display_booking_details(self):
-        print(f"""
-        Booking ID: {self.__booking_id}
-        Student: {self.__student}
-        Equipment: {self.__equipment}
-        Booking Date: {self.__booking_date}
-        Start Time: {self.__start_time}
-        Return Time: {self.__return_time}
-        Purpose: {self.__purpose}
-        Status: {self.__status}
-        Admin Comment: {self.__admin_comment}
-        """)   
-            
-             
-         
+        return {
+            "booking_id": self.__booking_id,
+            "student": self.__student,
+            "equipment": self.__equipment,
+            "booking_date": str(self.__booking_date),
+            "start_time": str(self.__start_time),
+            "return_time": str(self.__return_time),
+            "purpose": self.__purpose,
+            "quantity": self.__quantity,
+            "status": self.__status,
+            "admin_comment": self.__admin_comment
+        }
