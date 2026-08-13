@@ -45,7 +45,7 @@ main {
     color: #12355b;
 }
 
-form:not(.delete-form) {
+form:not(.delete-form):not(.return-form) {
     display: grid;
     grid-template-columns: 160px 1fr;
     gap: 14px;
@@ -56,12 +56,20 @@ label {
     font-weight: bold;
 }
 
-input {
+input,
+select,
+textarea {
     width: 100%;
     padding: 11px;
+    font-family: Arial, sans-serif;
     font-size: 16px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
+    background: white;
+}
+
+textarea {
+    resize: vertical;
 }
 
 button {
@@ -75,7 +83,7 @@ button {
     cursor: pointer;
 }
 
-form:not(.delete-form) button {
+form:not(.delete-form):not(.return-form) button {
     grid-column: 2;
     justify-self: start;
 }
@@ -118,6 +126,11 @@ tbody tr:hover {
     background: #f8fafc;
 }
 
+.delete-form,
+.return-form {
+    margin: 0;
+}
+
 .delete-button {
     padding: 8px 12px;
     background: #b91c1c;
@@ -127,16 +140,29 @@ tbody tr:hover {
     background: #991b1b;
 }
 
+.return-button {
+    padding: 8px 12px;
+    background: #15803d;
+}
+
+.return-button:hover {
+    background: #166534;
+}
+
 @media (max-width: 650px) {
-    form:not(.delete-form) {
+    form:not(.delete-form):not(.return-form) {
         grid-template-columns: 1fr;
     }
 
-    form:not(.delete-form) button {
+    form:not(.delete-form):not(.return-form) button {
         grid-column: 1;
     }
 
     header h1 {
         font-size: 30px;
+    }
+
+    .card {
+        padding: 18px;
     }
 }
