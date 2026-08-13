@@ -3,26 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>LabSync</title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
     <header>
         <h1>LabSync</h1>
-        <p>Laboratory Equipment Management System</p>
+        <p>Laboratory Equipment Booking System</p>
     </header>
 
     <main>
         {% if request.args.get("message") %}
-            <div class="message">
-                {{ request.args.get("message") }}
-            </div>
+            <div class="message">{{ request.args.get("message") }}</div>
         {% endif %}
 
         <section class="card">
@@ -30,40 +23,57 @@
 
             <form action="{{ url_for('add_equipment') }}" method="post">
                 <label for="equipment_id">Equipment ID</label>
-                <input
-                    type="text"
-                    id="equipment_id"
-                    name="equipment_id"
-                    required
-                >
+                <input type="text" id="equipment_id" name="equipment_id" required>
 
                 <label for="name">Equipment name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                >
+                <input type="text" id="name" name="name" required>
 
                 <label for="category">Category</label>
-                <input
-                    type="text"
-                    id="category"
-                    name="category"
-                    required
-                >
+                <input type="text" id="category" name="category" required>
 
                 <label for="quantity">Quantity</label>
-                <input
-                    type="number"
-                    id="quantity"
-                    name="quantity"
-                    min="1"
-                    required
-                >
+                <input type="number" id="quantity" name="quantity" min="1" required>
 
                 <button type="submit">Add Equipment</button>
             </form>
+        </section>
+
+        <section class="card">
+            <h2>Book Equipment</h2>
+
+            {% if equipment_list %}
+                <form action="{{ url_for('book_equipment') }}" method="post">
+                    <label for="student">Student name</label>
+                    <input type="text" id="student" name="student" required>
+
+                    <label for="booking_equipment">Equipment</label>
+                    <select id="booking_equipment" name="booking_equipment" required>
+                        <option value="">Select equipment</option>
+
+                        {% for equipment in equipment_list %}
+                            {% set equipment_id = equipment.get("equipment_id", equipment.get("id", "")) %}
+                            {% set available = equipment.get("available_quantity", equipment.get("quantity", 1)) %}
+
+                            <option value="{{ equipment_id }}" {% if available == 0 %}disabled{% endif %}>
+                                {{ equipment_id }} — {{ equipment.get("name", "") }} — {{ available }} available
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="booking_quantity">Quantity required</label>
+                    <input type="number" id="booking_quantity" name="booking_quantity" min="1" required>
+
+                    <label for="return_date">Return date</label>
+                    <input type="date" id="return_date" name="return_date" required>
+
+                    <label for="purpose">Purpose</label>
+                    <textarea id="purpose" name="purpose" rows="3" required></textarea>
+
+                    <button type="submit">Book Equipment</button>
+                </form>
+            {% else %}
+                <p>Add equipment before creating a booking.</p>
+            {% endif %}
         </section>
 
         <section class="card">
@@ -86,48 +96,18 @@
 
                         <tbody>
                             {% for equipment in equipment_list %}
-                                {% set equipment_id =
-                                    equipment.get(
-                                        "equipment_id",
-                                        equipment.get("id", "")
-                                    )
-                                %}
+                                {% set equipment_id = equipment.get("equipment_id", equipment.get("id", "")) %}
 
                                 <tr>
                                     <td>{{ equipment_id }}</td>
                                     <td>{{ equipment.get("name", "") }}</td>
-                                    <td>
-                                        {{ equipment.get(
-                                            "category",
-                                            "Not specified"
-                                        ) }}
-                                    </td>
+                                    <td>{{ equipment.get("category", "Not specified") }}</td>
                                     <td>{{ equipment.get("quantity", 1) }}</td>
-                                    <td>
-                                        {{ equipment.get(
-                                            "available_quantity",
-                                            equipment.get("quantity", 1)
-                                        ) }}
-                                    </td>
+                                    <td>{{ equipment.get("available_quantity", equipment.get("quantity", 1)) }}</td>
                                     <td>{{ equipment.get("status", "available") }}</td>
                                     <td>
-                                        <form
-                                            action="{{ url_for(
-                                                'delete_equipment',
-                                                equipment_id=equipment_id
-                                            ) }}"
-                                            method="post"
-                                            class="delete-form"
-                                            onsubmit="return confirm(
-                                                'Delete this equipment?'
-                                            );"
-                                        >
-                                            <button
-                                                type="submit"
-                                                class="delete-button"
-                                            >
-                                                Delete
-                                            </button>
+                                        <form action="{{ url_for('delete_equipment', equipment_id=equipment_id) }}" method="post" class="delete-form" onsubmit="return confirm('Delete this equipment?');">
+                                            <button type="submit" class="delete-button">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -137,6 +117,56 @@
                 </div>
             {% else %}
                 <p>No equipment has been added.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Booking List</h2>
+
+            {% if booking_list %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Student</th>
+                                <th>Equipment</th>
+                                <th>Quantity</th>
+                                <th>Booking date</th>
+                                <th>Return date</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for booking in booking_list %}
+                                <tr>
+                                    <td>{{ booking.get("booking_id", "") }}</td>
+                                    <td>{{ booking.get("student", "") }}</td>
+                                    <td>{{ booking.get("equipment", "") }}</td>
+                                    <td>{{ booking.get("quantity", 1) }}</td>
+                                    <td>{{ booking.get("booking_date", "") }}</td>
+                                    <td>{{ booking.get("return_time", "") }}</td>
+                                    <td>{{ booking.get("purpose", "") }}</td>
+                                    <td>{{ booking.get("status", "") }}</td>
+                                    <td>
+                                        {% if booking.get("status") in ["Active", "Overdue"] %}
+                                            <form action="{{ url_for('return_equipment', booking_id=booking.get('booking_id')) }}" method="post" class="return-form" onsubmit="return confirm('Return this equipment?');">
+                                                <button type="submit" class="return-button">Return</button>
+                                            </form>
+                                        {% else %}
+                                            Completed
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No bookings have been created.</p>
             {% endif %}
         </section>
     </main>
