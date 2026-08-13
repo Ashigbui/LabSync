@@ -25,7 +25,6 @@ def save_equipment(equipment_list):
 
 def show_equipment():
     equipment_box.delete(0, tk.END)
-
     equipment_list = read_equipment()
 
     if not equipment_list:
@@ -33,12 +32,10 @@ def show_equipment():
         return
 
     for equipment in equipment_list:
-        # Supports both the old "id" and new "equipment_id" format
         equipment_id = equipment.get(
             "equipment_id",
             equipment.get("id", "")
         )
-
         name = equipment.get("name", "")
         category = equipment.get("category", "Not specified")
         quantity = equipment.get("quantity", 1)
@@ -49,6 +46,7 @@ def show_equipment():
             f"{equipment_id} — {name} — {category} — "
             f"Quantity: {quantity} — {status}"
         )
+
 
 def delete_equipment():
     selected = equipment_box.curselection()
@@ -64,7 +62,10 @@ def delete_equipment():
     equipment_list = read_equipment()
 
     if selected_index >= len(equipment_list):
-        messagebox.showerror("Error", "Please select valid equipment.")
+        messagebox.showerror(
+            "Error",
+            "Please select valid equipment."
+        )
         return
 
     equipment = equipment_list[selected_index]
@@ -90,7 +91,8 @@ def delete_equipment():
         "Success",
         "Equipment deleted successfully."
     )
-    
+
+
 def add_equipment():
     equipment_id = id_entry.get().strip()
     name = name_entry.get().strip()
@@ -109,7 +111,6 @@ def add_equipment():
 
         if quantity <= 0:
             raise ValueError
-
     except ValueError:
         messagebox.showerror(
             "Error",
@@ -161,7 +162,7 @@ def add_equipment():
 
 window = tk.Tk()
 window.title("LabSync")
-window.geometry("850x650")
+window.geometry("850x700")
 
 heading = tk.Label(
     window,
@@ -215,4 +216,5 @@ equipment_box = tk.Listbox(
 )
 equipment_box.pack(pady=15)
 
+show_equipment()
 window.mainloop()
