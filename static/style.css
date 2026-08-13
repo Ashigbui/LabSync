@@ -1,0 +1,142 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #1f2937;
+    background: #f1f5f9;
+}
+
+header {
+    padding: 32px 20px;
+    text-align: center;
+    color: white;
+    background: #12355b;
+}
+
+header h1 {
+    margin: 0 0 8px;
+    font-size: 38px;
+}
+
+header p {
+    margin: 0;
+    color: #dbeafe;
+}
+
+main {
+    width: min(1100px, 92%);
+    margin: 30px auto;
+}
+
+.card {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.1);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #12355b;
+}
+
+form:not(.delete-form) {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 14px;
+    align-items: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 11px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+button {
+    padding: 11px 18px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    background: #176b87;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+form:not(.delete-form) button {
+    grid-column: 2;
+    justify-self: start;
+}
+
+button:hover {
+    background: #12546b;
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 14px;
+    color: #14532d;
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    color: white;
+    background: #12355b;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+.delete-button {
+    padding: 8px 12px;
+    background: #b91c1c;
+}
+
+.delete-button:hover {
+    background: #991b1b;
+}
+
+@media (max-width: 650px) {
+    form:not(.delete-form) {
+        grid-template-columns: 1fr;
+    }
+
+    form:not(.delete-form) button {
+        grid-column: 1;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+}
