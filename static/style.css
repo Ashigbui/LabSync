@@ -1,72 +1,259 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 :root {
-    --ashesi-burgundy: #800120;
-    --ashesi-burgundy-dark: #5f0018;
-    --ashesi-burgundy-light: #f8e9ed;
-    --ashesi-black: #000000;
-    --ashesi-white: #ffffff;
-    --ashesi-cream: #f8f5f1;
-    --ashesi-grey: #f2f2f2;
-    --ashesi-border: #dedede;
-    --ashesi-text: #1a1a1a;
-    --ashesi-text-soft: #656565;
+    --burgundy: #800120;
+    --burgundy-dark: #5d0017;
+    --burgundy-light: #f8e8ec;
+    --black: #000000;
+    --white: #ffffff;
+    --cream: #f7f4ef;
+    --grey-light: #f4f4f4;
+    --grey: #dedede;
+    --grey-dark: #666666;
+    --text: #1b1b1b;
+    --green: #16763b;
+    --green-light: #e1f4e7;
+    --yellow: #925d00;
+    --yellow-light: #fff3cb;
+    --red: #aa1e21;
+    --red-light: #fbe4e5;
+    --blue: #275c8c;
+    --blue-light: #e4eef8;
+    --shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
 
-    --navy: #800120;
-    --navy-dark: #000000;
-    --navy-light: #9e2744;
-    --orange: #800120;
-    --orange-dark: #5f0018;
-    --orange-light: #f8e9ed;
-    --background: #f7f6f4;
-    --surface: #ffffff;
-    --surface-soft: #f7f6f4;
-    --text: #1a1a1a;
-    --text-soft: #656565;
-    --border: #dedede;
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
     font-family: "Poppins", Arial, sans-serif;
+    background: var(--cream);
+    line-height: 1.55;
 }
 
 h1,
 h2,
-.hero-content h1,
-.auth-introduction h1,
-.dashboard-welcome h1,
-.section-heading h2 {
+h3 {
     font-family: "EB Garamond", Georgia, serif;
 }
 
+a {
+    color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.message {
+    width: min(1280px, 92%);
+    margin: 22px auto;
+    padding: 14px 18px;
+    color: #14532d;
+    font-weight: 600;
+    background: var(--green-light);
+    border: 1px solid #9bd5ab;
+    border-left: 5px solid var(--green);
+    border-radius: 5px;
+}
+
+/* =========================================================
+   SHARED BUTTONS
+   ========================================================= */
+
 .primary-button,
-.nav-button,
-.portal-button {
-    background: var(--ashesi-burgundy);
-    box-shadow: none;
+.secondary-button,
+.burgundy-button,
+.black-button,
+.light-outline-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 21px;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.primary-button,
+.burgundy-button {
+    color: var(--white);
+    background: var(--burgundy);
 }
 
 .primary-button:hover,
-.nav-button:hover,
-.portal-button:hover {
-    background: var(--ashesi-burgundy-dark);
+.burgundy-button:hover {
+    background: var(--burgundy-dark);
+    transform: translateY(-2px);
 }
 
-.eyebrow {
-    color: var(--ashesi-burgundy);
+.secondary-button {
+    color: var(--burgundy);
+    background: var(--white);
+    border-color: var(--burgundy);
 }
+
+.secondary-button:hover {
+    color: var(--white);
+    background: var(--burgundy);
+}
+
+.black-button {
+    color: var(--white);
+    background: var(--black);
+}
+
+.black-button:hover {
+    background: #292929;
+    transform: translateY(-2px);
+}
+
+.light-outline-button {
+    color: var(--white);
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.75);
+}
+
+.light-outline-button:hover {
+    color: var(--black);
+    background: var(--white);
+}
+
+.full-width-button {
+    width: 100%;
+}
+
+/* =========================================================
+   STANDARD HEADER FOR LOGIN AND PORTALS
+   ========================================================= */
 
 .site-header {
-    background: var(--ashesi-black);
-    border-bottom-color: var(--ashesi-burgundy);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    min-height: 88px;
+    padding: 14px max(5vw, 28px);
+    color: var(--white);
+    background: var(--black);
+    border-top: 5px solid var(--burgundy);
 }
 
-.site-footer {
-    background: var(--ashesi-black);
-    border-top-color: var(--ashesi-burgundy);
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: var(--white);
+    text-decoration: none;
 }
 
-/* Ashesi homepage header */
+.brand-logo {
+    width: auto;
+    max-width: 145px;
+    height: 54px;
+    object-fit: contain;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    padding-left: 18px;
+    border-left: 1px solid #555555;
+}
+
+.brand-name {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.brand-description {
+    color: #c8c8c8;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.main-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-link,
+.nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.nav-link {
+    color: #e1e1e1;
+}
+
+.nav-link:hover {
+    color: var(--white);
+    background: #242424;
+}
+
+.nav-button {
+    color: var(--white);
+    background: var(--burgundy);
+}
+
+.nav-button:hover {
+    background: var(--burgundy-dark);
+}
+
+.user-badge {
+    max-width: 270px;
+    padding: 8px 12px;
+    overflow: hidden;
+    color: #e4e4e4;
+    font-size: 12px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid #505050;
+    border-radius: 20px;
+}
+
+/* =========================================================
+   FAB LAB HOME HEADER
+   ========================================================= */
 
 .ashesi-header {
     position: sticky;
@@ -75,112 +262,99 @@ h2,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 32px;
-    min-height: 82px;
+    gap: 30px;
+    min-height: 84px;
     padding: 13px clamp(24px, 5vw, 90px);
-    background: var(--ashesi-white);
-    border-top: 5px solid var(--ashesi-burgundy);
-    border-bottom: 1px solid #e5e5e5;
+    background: var(--white);
+    border-top: 5px solid var(--burgundy);
+    border-bottom: 1px solid #e2e2e2;
 }
 
 .ashesi-brand {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 21px;
     text-decoration: none;
 }
 
 .ashesi-logo {
     width: auto;
-    max-width: 190px;
-    height: 50px;
+    max-width: 180px;
+    height: 53px;
     object-fit: contain;
-    object-position: left center;
 }
 
 .labsync-label {
-    padding-left: 22px;
-    color: var(--ashesi-text);
-    font-size: 13px;
+    padding-left: 21px;
+    color: var(--text);
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    border-left: 1px solid #d7d7d7;
+    border-left: 1px solid #d1d1d1;
 }
 
 .ashesi-navigation {
     display: flex;
     align-items: center;
-    gap: clamp(16px, 2.5vw, 38px);
+    gap: clamp(15px, 2.2vw, 34px);
 }
 
 .ashesi-navigation a {
-    position: relative;
-    color: var(--ashesi-black);
-    font-size: 14px;
+    color: var(--black);
+    font-size: 13px;
     font-weight: 500;
     text-decoration: none;
 }
 
-.ashesi-navigation a:not(.header-sign-in)::after {
-    position: absolute;
-    right: 0;
-    bottom: -7px;
-    left: 0;
-    height: 2px;
-    content: "";
-    background: var(--ashesi-burgundy);
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.2s ease;
-}
-
-.ashesi-navigation a:not(.header-sign-in):hover::after {
-    transform: scaleX(1);
+.ashesi-navigation a:hover {
+    color: var(--burgundy);
 }
 
 .ashesi-navigation .header-sign-in {
-    padding: 11px 18px;
-    color: white;
+    padding: 10px 17px;
+    color: var(--white);
     font-weight: 600;
-    background: var(--ashesi-burgundy);
+    background: var(--burgundy);
     border-radius: 4px;
-    transition: background 0.2s ease;
 }
 
 .ashesi-navigation .header-sign-in:hover {
-    background: var(--ashesi-burgundy-dark);
+    color: var(--white);
+    background: var(--burgundy-dark);
 }
 
-/* Fab Lab hero */
+/* =========================================================
+   FAB LAB HOME HERO
+   ========================================================= */
 
 .fablab-home {
-    color: var(--ashesi-text);
-    background: var(--ashesi-white);
+    color: var(--text);
+    background: var(--white);
 }
 
 .home-message {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .fablab-hero {
     position: relative;
-    background: var(--ashesi-black);
+    background: var(--black);
 }
 
 .hero-image-placeholder {
     position: relative;
-    min-height: calc(100vh - 82px);
+    min-height: calc(100vh - 84px);
     overflow: hidden;
     background:
         linear-gradient(
-            120deg,
-            rgba(128, 1, 32, 0.78),
-            rgba(0, 0, 0, 0.35) 45%,
-            rgba(0, 0, 0, 0.8)
+            110deg,
+            rgba(128, 1, 32, 0.82),
+            rgba(0, 0, 0, 0.42) 45%,
+            rgba(0, 0, 0, 0.82)
         ),
-        linear-gradient(135deg, #3f3f3f, #101010);
+        linear-gradient(135deg, #505050, #111111);
 }
 
 .placeholder-grid {
@@ -188,8 +362,8 @@ h2,
     inset: 0;
     opacity: 0.13;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px);
     background-size: 70px 70px;
 }
 
@@ -198,15 +372,11 @@ h2,
     inset: 0;
     background:
         radial-gradient(
-            circle at 75% 35%,
-            rgba(255, 255, 255, 0.13),
-            transparent 26%
+            circle at 77% 35%,
+            rgba(255, 255, 255, 0.15),
+            transparent 27%
         ),
-        linear-gradient(
-            180deg,
-            transparent 55%,
-            rgba(0, 0, 0, 0.72)
-        );
+        linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.75));
 }
 
 .fablab-hero-content {
@@ -217,39 +387,40 @@ h2,
     justify-content: center;
     flex-direction: column;
     width: min(1320px, 88%);
-    min-height: calc(100vh - 82px);
+    min-height: calc(100vh - 84px);
     margin: auto;
     padding: 100px 0 130px;
-    color: white;
+    color: var(--white);
 }
 
 .hero-kicker,
-.section-kicker {
+.section-kicker,
+.eyebrow {
     display: inline-block;
-    margin-bottom: 18px;
-    color: var(--ashesi-burgundy);
-    font-size: 12px;
+    margin-bottom: 17px;
+    color: var(--burgundy);
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
 .hero-kicker {
-    color: #f5b9c8;
+    color: #f1bdca;
 }
 
 .fablab-hero-content h1 {
-    max-width: 920px;
+    max-width: 940px;
     margin: 0 0 25px;
-    font-family: "EB Garamond", Georgia, serif;
-    font-size: clamp(65px, 9vw, 135px);
+    font-size: clamp(65px, 9vw, 132px);
     font-weight: 500;
     line-height: 0.9;
     letter-spacing: -0.045em;
 }
 
 .fablab-hero-content h1 em {
-    color: #f0bdc9;
+    color: #f1bdca;
     font-weight: 500;
 }
 
@@ -263,60 +434,8 @@ h2,
 
 .fablab-hero-actions {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
     gap: 14px;
-}
-
-.burgundy-button,
-.black-button,
-.light-outline-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50px;
-    padding: 13px 21px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.burgundy-button {
-    color: white;
-    background: var(--ashesi-burgundy);
-}
-
-.burgundy-button:hover {
-    background: var(--ashesi-burgundy-dark);
-    transform: translateY(-2px);
-}
-
-.black-button {
-    color: white;
-    background: var(--ashesi-black);
-}
-
-.black-button:hover {
-    background: #292929;
-    transform: translateY(-2px);
-}
-
-.light-outline-button {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.7);
-}
-
-.light-outline-button:hover {
-    color: var(--ashesi-black);
-    background: white;
-    border-color: white;
 }
 
 .future-photo-label {
@@ -327,14 +446,14 @@ h2,
     display: flex;
     align-items: flex-end;
     flex-direction: column;
-    color: white;
+    color: var(--white);
     text-align: right;
 }
 
 .future-photo-label span {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
 }
 
@@ -353,12 +472,12 @@ h2,
     flex-direction: column;
     width: 66px;
     height: 66px;
-    color: white;
+    color: var(--white);
     font-size: 9px;
     letter-spacing: 0.09em;
     text-decoration: none;
     text-transform: uppercase;
-    background: var(--ashesi-burgundy);
+    background: var(--burgundy);
     border-radius: 50%;
     transform: translateX(-50%);
 }
@@ -367,19 +486,21 @@ h2,
     font-size: 20px;
 }
 
-/* Fab Lab introduction */
+/* =========================================================
+   FAB LAB INFORMATION SECTIONS
+   ========================================================= */
 
 .fablab-introduction {
     display: grid;
-    grid-template-columns: 90px minmax(260px, 0.8fr) minmax(300px, 1fr);
-    gap: clamp(30px, 5vw, 80px);
+    grid-template-columns: 80px minmax(260px, 0.8fr) minmax(300px, 1fr);
+    gap: clamp(30px, 5vw, 75px);
     width: min(1250px, 88%);
     margin: auto;
-    padding: 145px 0 125px;
+    padding: 145px 0 120px;
 }
 
 .section-number {
-    color: var(--ashesi-burgundy);
+    color: var(--burgundy);
     font-size: 13px;
     font-weight: 700;
 }
@@ -390,26 +511,25 @@ h2,
 .portal-access-heading h2,
 .future-gallery-section h2 {
     margin: 0;
-    font-family: "EB Garamond", Georgia, serif;
-    color: var(--ashesi-black);
-    font-size: clamp(45px, 5vw, 75px);
+    color: var(--black);
+    font-size: clamp(44px, 5vw, 74px);
     font-weight: 500;
     line-height: 1.02;
     letter-spacing: -0.035em;
 }
 
 .introduction-copy {
-    padding-top: 28px;
+    padding-top: 27px;
 }
 
 .introduction-copy p {
-    color: var(--ashesi-text-soft);
+    color: var(--grey-dark);
     line-height: 1.8;
 }
 
 .introduction-copy .large-copy {
     margin-top: 0;
-    color: var(--ashesi-text);
+    color: var(--text);
     font-family: "EB Garamond", Georgia, serif;
     font-size: 25px;
     line-height: 1.45;
@@ -419,73 +539,64 @@ h2,
 .portal-text-link {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 18px;
-    color: var(--ashesi-burgundy);
+    gap: 10px;
+    margin-top: 17px;
+    color: var(--burgundy);
     font-weight: 600;
     text-decoration: none;
 }
 
-.text-link span {
-    transition: transform 0.2s ease;
-}
-
-.text-link:hover span {
-    transform: translateX(5px);
-}
-
-/* Quotation */
-
 .fablab-quote {
-    position: relative;
-    padding: 115px max(8vw, 30px);
-    color: white;
+    padding: 110px max(8vw, 30px);
+    color: var(--white);
     text-align: center;
-    background: var(--ashesi-burgundy);
+    background: var(--burgundy);
 }
 
 .quote-mark {
-    height: 70px;
+    height: 65px;
     color: rgba(255, 255, 255, 0.23);
     font-family: "EB Garamond", Georgia, serif;
-    font-size: 120px;
+    font-size: 115px;
     line-height: 1;
 }
 
 .fablab-quote blockquote {
     max-width: 980px;
-    margin: 0 auto 24px;
+    margin: 0 auto 23px;
     font-family: "EB Garamond", Georgia, serif;
-    font-size: clamp(36px, 4.5vw, 65px);
-    line-height: 1.14;
+    font-size: clamp(35px, 4.5vw, 64px);
+    line-height: 1.13;
 }
 
 .fablab-quote p {
     margin: 0;
-    color: #eab7c4;
-    font-size: 12px;
+    color: #eab8c4;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
-/* Facilities */
+/* =========================================================
+   FACILITIES
+   ========================================================= */
 
 .facilities-section {
-    padding: 120px max(5vw, 25px);
-    background: var(--ashesi-cream);
+    padding: 115px max(5vw, 25px);
+    background: var(--cream);
 }
 
 .centered-section-heading {
     max-width: 850px;
-    margin: 0 auto 65px;
+    margin: 0 auto 62px;
     text-align: center;
 }
 
 .centered-section-heading > p {
     max-width: 670px;
-    margin: 22px auto 0;
-    color: var(--ashesi-text-soft);
+    margin: 21px auto 0;
+    color: var(--grey-dark);
     line-height: 1.75;
 }
 
@@ -493,8 +604,8 @@ h2,
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
     width: min(1250px, 100%);
-    margin: 0 auto 30px;
-    background: white;
+    margin: 0 auto 28px;
+    background: var(--white);
 }
 
 .facility-image-placeholder,
@@ -505,13 +616,13 @@ h2,
     justify-content: center;
     min-height: 280px;
     overflow: hidden;
-    color: #8b8b8b;
-    font-size: 12px;
+    color: #808080;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.11em;
+    text-align: center;
     text-transform: uppercase;
-    background:
-        linear-gradient(135deg, #dfddda, #f5f3ef);
+    background: linear-gradient(135deg, #dedbd6, #f4f1ec);
 }
 
 .facility-image-placeholder::after,
@@ -519,11 +630,11 @@ h2,
     position: absolute;
     inset: 20px;
     content: "";
-    border: 1px solid rgba(128, 1, 32, 0.24);
+    border: 1px solid rgba(128, 1, 32, 0.25);
 }
 
 .large-placeholder {
-    min-height: 540px;
+    min-height: 530px;
 }
 
 .facility-feature-copy {
@@ -531,14 +642,14 @@ h2,
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    padding: clamp(38px, 6vw, 75px);
+    padding: clamp(38px, 6vw, 72px);
 }
 
 .facility-index {
     display: inline-block;
-    margin-bottom: 20px;
-    color: var(--ashesi-burgundy);
-    font-size: 12px;
+    margin-bottom: 18px;
+    color: var(--burgundy);
+    font-size: 11px;
     font-weight: 700;
 }
 
@@ -547,23 +658,22 @@ h2,
 .process-step h3,
 .portal-access-card h3 {
     margin: 0 0 14px;
-    font-family: "EB Garamond", Georgia, serif;
-    font-size: 37px;
+    font-size: 36px;
     font-weight: 600;
     line-height: 1.05;
 }
 
 .facility-feature-copy p,
 .facility-card p {
-    color: var(--ashesi-text-soft);
+    color: var(--grey-dark);
     line-height: 1.75;
 }
 
 .facility-feature-copy ul,
 .portal-access-card ul {
     display: grid;
-    gap: 10px;
-    margin: 20px 0 0;
+    gap: 9px;
+    margin: 19px 0 0;
     padding: 0;
     list-style: none;
 }
@@ -571,7 +681,7 @@ h2,
 .facility-feature-copy li,
 .portal-access-card li {
     position: relative;
-    padding-left: 21px;
+    padding-left: 20px;
 }
 
 .facility-feature-copy li::before,
@@ -582,46 +692,48 @@ h2,
     width: 7px;
     height: 7px;
     content: "";
-    background: var(--ashesi-burgundy);
+    background: var(--burgundy);
     border-radius: 50%;
 }
 
 .facility-card-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 30px;
+    gap: 28px;
     width: min(1250px, 100%);
     margin: auto;
 }
 
 .facility-card {
     overflow: hidden;
-    background: white;
+    background: var(--white);
 }
 
 .facility-card-content {
-    padding: 28px;
+    padding: 27px;
 }
 
 .facility-card h3 {
     font-size: 29px;
 }
 
-/* Process */
+/* =========================================================
+   PROCESS
+   ========================================================= */
 
 .process-section {
-    padding: 120px max(5vw, 25px);
-    color: white;
-    background: var(--ashesi-black);
+    padding: 115px max(5vw, 25px);
+    color: var(--white);
+    background: var(--black);
 }
 
 .process-heading {
     max-width: 820px;
-    margin-bottom: 70px;
+    margin-bottom: 66px;
 }
 
 .process-heading h2 {
-    color: white;
+    color: var(--white);
 }
 
 .process-heading p {
@@ -631,7 +743,7 @@ h2,
 }
 
 .light-kicker {
-    color: #dc9baa;
+    color: #dba2b0;
 }
 
 .process-steps {
@@ -639,13 +751,13 @@ h2,
     grid-template-columns: repeat(4, minmax(0, 1fr));
     width: min(1300px, 100%);
     margin: auto;
-    border-top: 1px solid #454545;
+    border-top: 1px solid #444444;
 }
 
 .process-step {
-    min-height: 250px;
-    padding: 35px 30px;
-    border-right: 1px solid #454545;
+    min-height: 245px;
+    padding: 34px 29px;
+    border-right: 1px solid #444444;
 }
 
 .process-step:last-child {
@@ -654,9 +766,9 @@ h2,
 
 .process-step > span {
     display: block;
-    margin-bottom: 50px;
-    color: #d68b9e;
-    font-size: 12px;
+    margin-bottom: 48px;
+    color: #d995a6;
+    font-size: 11px;
     font-weight: 700;
 }
 
@@ -666,67 +778,69 @@ h2,
 
 .process-step p {
     color: #bcbcbc;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
-/* Portal access */
+/* =========================================================
+   PORTAL ACCESS
+   ========================================================= */
 
 .portal-access-section {
-    padding: 120px max(5vw, 25px);
-    background: white;
+    padding: 115px max(5vw, 25px);
+    background: var(--white);
 }
 
 .portal-access-heading {
     max-width: 850px;
-    margin: 0 auto 60px;
+    margin: 0 auto 58px;
     text-align: center;
 }
 
 .portal-access-heading p {
     max-width: 670px;
     margin: 20px auto 0;
-    color: var(--ashesi-text-soft);
+    color: var(--grey-dark);
     line-height: 1.75;
 }
 
 .portal-access-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 30px;
+    gap: 28px;
     width: min(1150px, 100%);
     margin: auto;
 }
 
 .portal-access-card {
-    padding: clamp(32px, 5vw, 58px);
-    border: 1px solid var(--ashesi-border);
+    padding: clamp(32px, 5vw, 56px);
+    border: 1px solid var(--grey);
 }
 
 .portal-card-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 55px;
+    margin-bottom: 52px;
 }
 
 .portal-type {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
 .portal-arrow {
-    font-size: 25px;
+    font-size: 24px;
 }
 
 .portal-access-card h3 {
-    font-size: clamp(38px, 4vw, 55px);
+    font-size: clamp(37px, 4vw, 53px);
 }
 
 .portal-access-card > p {
-    color: var(--ashesi-text-soft);
+    color: var(--grey-dark);
     line-height: 1.75;
 }
 
@@ -734,39 +848,41 @@ h2,
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 18px;
-    margin-top: 35px;
+    gap: 17px;
+    margin-top: 34px;
 }
 
 .student-access-card {
-    background: var(--ashesi-cream);
+    background: var(--cream);
 }
 
 .staff-access-card {
-    color: white;
-    background: var(--ashesi-burgundy);
-    border-color: var(--ashesi-burgundy);
+    color: var(--white);
+    background: var(--burgundy);
+    border-color: var(--burgundy);
 }
 
 .staff-access-card h3,
 .staff-access-card .portal-type {
-    color: white;
+    color: var(--white);
 }
 
 .staff-access-card > p,
 .staff-access-card li {
-    color: #f0d4db;
+    color: #f1d4db;
 }
 
 .staff-access-card li::before {
-    background: white;
+    background: var(--white);
 }
 
-/* Gallery placeholders */
+/* =========================================================
+   FUTURE GALLERY
+   ========================================================= */
 
 .future-gallery-section {
-    padding: 110px max(5vw, 25px);
-    background: var(--ashesi-cream);
+    padding: 105px max(5vw, 25px);
+    background: var(--cream);
 }
 
 .future-gallery-section > div:first-child,
@@ -777,48 +893,717 @@ h2,
 }
 
 .future-gallery-section > p {
-    max-width: 1200px;
-    color: var(--ashesi-text-soft);
+    color: var(--grey-dark);
 }
 
 .future-gallery-grid {
     display: grid;
     grid-template-columns: 1.5fr 0.75fr 0.75fr;
-    gap: 20px;
+    gap: 18px;
     width: min(1200px, 100%);
-    margin: 45px auto 0;
+    margin: 42px auto 0;
 }
 
 .gallery-placeholder {
-    min-height: 340px;
+    min-height: 330px;
 }
 
 .gallery-wide {
-    min-height: 520px;
+    min-height: 510px;
 }
 
-/* Ashesi homepage footer */
+/* =========================================================
+   AUTHENTICATION PAGES
+   ========================================================= */
+
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 12% 22%,
+            rgba(128, 1, 32, 0.09),
+            transparent 27%
+        ),
+        var(--cream);
+}
+
+.auth-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(390px, 0.7fr);
+    align-items: center;
+    gap: clamp(40px, 8vw, 100px);
+    width: min(1120px, 90%);
+    min-height: calc(100vh - 180px);
+    margin: auto;
+    padding: 62px 0;
+}
+
+.auth-introduction h1 {
+    max-width: 620px;
+    margin: 0 0 20px;
+    color: var(--black);
+    font-size: clamp(43px, 5vw, 66px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.auth-introduction > p {
+    max-width: 590px;
+    margin: 0;
+    color: var(--grey-dark);
+    font-size: 17px;
+    line-height: 1.75;
+}
+
+.auth-benefits {
+    display: grid;
+    gap: 14px;
+    margin-top: 32px;
+}
+
+.auth-benefit {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.auth-benefit span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 37px;
+    height: 37px;
+    color: var(--burgundy);
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--burgundy-light);
+    border-radius: 50%;
+}
+
+.auth-benefit p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-card {
+    padding: clamp(27px, 4vw, 40px);
+    background: var(--white);
+    border: 1px solid var(--grey);
+    box-shadow: var(--shadow);
+}
+
+.auth-card-heading,
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.auth-card-heading {
+    justify-content: flex-start;
+    margin-bottom: 25px;
+}
+
+.panel-icon,
+.card-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-family: "Poppins", Arial, sans-serif;
+    font-weight: 700;
+    background: var(--burgundy);
+}
+
+.panel-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+}
+
+.card-icon {
+    width: 41px;
+    height: 41px;
+    font-size: 22px;
+    border-radius: 50%;
+}
+
+.auth-card-heading h2,
+.card-heading h2 {
+    margin: 0;
+    color: var(--black);
+}
+
+.auth-card-heading h2 {
+    font-size: 29px;
+}
+
+.auth-card-heading p {
+    margin: 3px 0 0;
+    color: var(--grey-dark);
+    font-size: 13px;
+}
+
+.auth-card .message {
+    width: 100%;
+    margin: 0 0 20px;
+}
+
+.auth-form {
+    display: grid;
+    gap: 17px;
+}
+
+.form-group {
+    display: grid;
+    gap: 7px;
+}
+
+.form-group label {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    color: var(--text);
+    background: var(--white);
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+input,
+select {
+    min-height: 47px;
+    padding: 10px 12px;
+}
+
+textarea {
+    min-height: 108px;
+    padding: 12px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--burgundy);
+    box-shadow: 0 0 0 3px rgba(128, 1, 32, 0.1);
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 23px 0;
+    color: var(--grey-dark);
+    font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    flex: 1;
+    height: 1px;
+    content: "";
+    background: var(--grey);
+}
+
+.security-note {
+    margin: 18px 0 0;
+    color: var(--grey-dark);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* =========================================================
+   DASHBOARDS
+   ========================================================= */
+
+.dashboard-page {
+    background:
+        linear-gradient(
+            180deg,
+            var(--black) 0,
+            var(--black) 235px,
+            var(--cream) 235px
+        );
+}
+
+.dashboard-main {
+    width: min(1320px, 92%);
+    margin: auto;
+    padding: 48px 0 68px;
+}
+
+.dashboard-welcome {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 27px;
+    margin-bottom: 32px;
+    color: var(--white);
+}
+
+.dashboard-welcome .eyebrow {
+    color: #dda3b1;
+}
+
+.dashboard-welcome h1 {
+    margin: 0 0 7px;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+}
+
+.dashboard-welcome p {
+    margin: 0;
+    color: #c3c3c3;
+    font-size: 15px;
+}
+
+.dashboard-main > .message {
+    width: 100%;
+    margin: 0 0 23px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+    margin-bottom: 23px;
+}
+
+.summary-card {
+    padding: 23px;
+    background: var(--white);
+    border: 1px solid var(--grey);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.summary-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--grey-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.summary-card strong {
+    display: block;
+    overflow: hidden;
+    color: var(--black);
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 35px;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+}
+
+.summary-card p {
+    margin: 8px 0 0;
+    color: var(--grey-dark);
+    font-size: 12px;
+}
+
+.accent-summary-card {
+    color: var(--white);
+    background: var(--burgundy);
+    border-color: var(--burgundy);
+}
+
+.accent-summary-card .summary-label,
+.accent-summary-card p {
+    color: #f0d1d9;
+}
+
+.accent-summary-card strong {
+    color: var(--white);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.6fr);
+    gap: 23px;
+    margin-bottom: 23px;
+}
+
+.content-card {
+    margin-bottom: 23px;
+    padding: clamp(21px, 3vw, 29px);
+    background: var(--white);
+    border: 1px solid var(--grey);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-grid .content-card {
+    margin-bottom: 0;
+}
+
+.card-heading {
+    margin-bottom: 23px;
+}
+
+.card-heading h2 {
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.modern-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.full-field {
+    grid-column: 1 / -1;
+}
+
+.modern-form button.full-field {
+    justify-self: start;
+    width: auto;
+}
+
+.guide-card {
+    color: var(--white);
+    background: var(--burgundy);
+    border-color: var(--burgundy);
+}
+
+.guide-card .eyebrow {
+    color: #f1c0cc;
+}
+
+.guide-card h2 {
+    color: var(--white);
+}
+
+.guide-list {
+    display: grid;
+    gap: 3px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.guide-list li {
+    display: grid;
+    grid-template-columns: 37px 1fr;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.19);
+}
+
+.guide-list li:last-child {
+    border-bottom: none;
+}
+
+.guide-list li > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 33px;
+    height: 33px;
+    color: var(--burgundy);
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--white);
+    border-radius: 50%;
+}
+
+.guide-list strong {
+    color: var(--white);
+}
+
+.guide-list p {
+    margin: 3px 0 0;
+    color: #eed5db;
+    font-size: 12px;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--grey);
+}
+
+table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px 15px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--grey);
+}
+
+th {
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--black);
+}
+
+tbody tr:hover {
+    background: #faf7f8;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+td {
+    color: #494949;
+    font-size: 13px;
+}
+
+td strong {
+    color: var(--text);
+}
+
+.record-id {
+    display: inline-block;
+    padding: 5px 8px;
+    color: var(--burgundy);
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--burgundy-light);
+    border-radius: 3px;
+}
+
+.table-secondary-text {
+    display: block;
+    max-width: 180px;
+    margin-top: 3px;
+    overflow: hidden;
+    color: var(--grey-dark);
+    font-size: 10px;
+    text-overflow: ellipsis;
+}
+
+.purpose-cell {
+    min-width: 140px;
+    max-width: 220px;
+}
+
+.action-cell {
+    min-width: 225px;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 9px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 20px;
+}
+
+.status-pending {
+    color: var(--yellow);
+    background: var(--yellow-light);
+}
+
+.status-active,
+.status-approved {
+    color: var(--green);
+    background: var(--green-light);
+}
+
+.status-denied,
+.status-cancelled {
+    color: var(--red);
+    background: var(--red-light);
+}
+
+.status-returned {
+    color: var(--blue);
+    background: var(--blue-light);
+}
+
+.status-overdue {
+    color: #a34500;
+    background: #ffead7;
+}
+
+.delete-form,
+.return-form,
+.action-form {
+    margin: 0;
+}
+
+.action-form {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 7px;
+}
+
+.action-form:last-child {
+    margin-bottom: 0;
+}
+
+.action-form input {
+    min-width: 125px;
+    min-height: 35px;
+    padding: 7px 8px;
+    font-size: 11px;
+}
+
+.delete-button,
+.return-button,
+.approve-button,
+.deny-button {
+    min-height: 35px;
+    padding: 8px 10px;
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.delete-button,
+.deny-button {
+    background: var(--red);
+}
+
+.delete-button:hover,
+.deny-button:hover {
+    background: #86171a;
+}
+
+.return-button,
+.approve-button {
+    background: var(--green);
+}
+
+.return-button:hover,
+.approve-button:hover {
+    background: #105e2e;
+}
+
+.decision-text {
+    color: var(--grey-dark);
+    font-size: 11px;
+}
+
+.empty-state {
+    padding: 40px 20px;
+    color: var(--grey-dark);
+    text-align: center;
+    background: #fafafa;
+    border: 1px dashed #bfbfbf;
+}
+
+.empty-state > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    margin-bottom: 12px;
+    color: var(--burgundy);
+    font-weight: 700;
+    background: var(--burgundy-light);
+    border-radius: 50%;
+}
+
+.empty-state h3 {
+    margin: 0 0 5px;
+    color: var(--black);
+    font-size: 25px;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* =========================================================
+   FOOTERS
+   ========================================================= */
+
+.site-footer,
+.ashesi-footer {
+    color: #c4c4c4;
+    background: var(--black);
+    border-top: 5px solid var(--burgundy);
+}
+
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 23px;
+    padding: 26px max(5vw, 28px);
+}
+
+.site-footer div {
+    display: flex;
+    flex-direction: column;
+}
+
+.site-footer strong {
+    color: var(--white);
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 19px;
+}
+
+.site-footer span,
+.site-footer p {
+    font-size: 11px;
+}
+
+.site-footer p {
+    margin: 0;
+}
 
 .ashesi-footer {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 35px;
-    padding: 42px max(5vw, 25px);
-    color: white;
-    background: var(--ashesi-black);
-    border-top: 5px solid var(--ashesi-burgundy);
+    gap: 34px;
+    padding: 40px max(5vw, 25px);
 }
 
 .footer-brand {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 17px;
 }
 
 .footer-brand img {
     width: auto;
-    max-width: 135px;
+    max-width: 125px;
     height: 48px;
     object-fit: contain;
 }
@@ -826,29 +1611,33 @@ h2,
 .footer-brand div {
     display: flex;
     flex-direction: column;
-    padding-left: 18px;
-    border-left: 1px solid #4c4c4c;
+    padding-left: 17px;
+    border-left: 1px solid #484848;
+}
+
+.footer-brand strong {
+    color: var(--white);
 }
 
 .footer-brand span,
 .footer-note {
-    color: #a8a8a8;
-    font-size: 11px;
+    color: #9f9f9f;
+    font-size: 10px;
 }
 
 .footer-links {
     display: flex;
-    gap: 24px;
+    gap: 22px;
 }
 
 .footer-links a {
-    color: #d4d4d4;
-    font-size: 12px;
+    color: #d2d2d2;
+    font-size: 11px;
     text-decoration: none;
 }
 
 .footer-links a:hover {
-    color: white;
+    color: var(--white);
 }
 
 .footer-note {
@@ -856,15 +1645,17 @@ h2,
     text-align: right;
 }
 
-/* Responsive Fab Lab homepage */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 1050px) {
     .ashesi-navigation {
-        gap: 15px;
+        gap: 14px;
     }
 
     .ashesi-navigation a {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .fablab-introduction {
@@ -892,7 +1683,7 @@ h2,
     }
 
     .process-step:nth-child(-n + 2) {
-        border-bottom: 1px solid #454545;
+        border-bottom: 1px solid #444444;
     }
 
     .future-gallery-grid {
@@ -901,6 +1692,22 @@ h2,
 
     .gallery-wide {
         grid-column: 1 / -1;
+    }
+
+    .auth-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-introduction {
+        max-width: 760px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .guide-card {
+        order: -1;
     }
 
     .ashesi-footer {
@@ -912,12 +1719,12 @@ h2,
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 780px) {
     .ashesi-header {
         position: relative;
         align-items: flex-start;
         flex-direction: column;
-        gap: 15px;
+        gap: 13px;
     }
 
     .ashesi-brand {
@@ -925,17 +1732,17 @@ h2,
     }
 
     .ashesi-logo {
-        max-width: 155px;
+        max-width: 145px;
     }
 
     .labsync-label {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .ashesi-navigation {
         width: 100%;
         overflow-x: auto;
-        padding-bottom: 3px;
+        padding-bottom: 4px;
     }
 
     .ashesi-navigation a {
@@ -944,7 +1751,7 @@ h2,
 
     .hero-image-placeholder,
     .fablab-hero-content {
-        min-height: 760px;
+        min-height: 730px;
     }
 
     .future-photo-label {
@@ -953,7 +1760,7 @@ h2,
 
     .fablab-introduction {
         grid-template-columns: 1fr;
-        padding: 110px 0 85px;
+        padding: 105px 0 80px;
     }
 
     .introduction-copy {
@@ -961,7 +1768,8 @@ h2,
     }
 
     .facility-card-grid,
-    .portal-access-grid {
+    .portal-access-grid,
+    .summary-grid {
         grid-template-columns: 1fr;
     }
 
@@ -971,7 +1779,7 @@ h2,
 
     .process-step {
         border-right: none;
-        border-bottom: 1px solid #454545;
+        border-bottom: 1px solid #444444;
     }
 
     .future-gallery-grid {
@@ -982,6 +1790,87 @@ h2,
         grid-column: 1;
     }
 
+    .site-header {
+        align-items: flex-start;
+        padding: 13px 19px;
+    }
+
+    .brand-logo {
+        max-width: 105px;
+        height: 43px;
+    }
+
+    .brand-text {
+        display: none;
+    }
+
+    .main-navigation {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .user-badge {
+        display: none;
+    }
+
+    .nav-link,
+    .nav-button {
+        min-height: 37px;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .auth-layout {
+        width: min(92%, 650px);
+        padding: 43px 0;
+    }
+
+    .auth-introduction h1 {
+        font-size: 42px;
+    }
+
+    .dashboard-page {
+        background:
+            linear-gradient(
+                180deg,
+                var(--black) 0,
+                var(--black) 270px,
+                var(--cream) 270px
+            );
+    }
+
+    .dashboard-main {
+        width: min(94%, 680px);
+        padding-top: 37px;
+    }
+
+    .dashboard-welcome {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .modern-form {
+        grid-template-columns: 1fr;
+    }
+
+    .full-field {
+        grid-column: 1;
+    }
+
+    .modern-form button.full-field {
+        width: 100%;
+    }
+
+    .action-form {
+        flex-direction: column;
+    }
+
+    .site-footer,
+    .footer-brand {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
     .footer-links {
         flex-wrap: wrap;
     }
@@ -989,7 +1878,7 @@ h2,
 
 @media (max-width: 520px) {
     .ashesi-header {
-        padding: 12px 16px;
+        padding: 11px 15px;
     }
 
     .labsync-label {
@@ -1001,7 +1890,7 @@ h2,
     }
 
     .fablab-hero-content h1 {
-        font-size: 60px;
+        font-size: 58px;
     }
 
     .fablab-hero-actions,
@@ -1015,42 +1904,36 @@ h2,
         width: 100%;
     }
 
-    .fablab-introduction,
     .facilities-section,
     .process-section,
     .portal-access-section,
     .future-gallery-section {
-        padding-right: 20px;
-        padding-left: 20px;
+        padding-right: 19px;
+        padding-left: 19px;
     }
 
     .fablab-quote {
-        padding-right: 20px;
-        padding-left: 20px;
+        padding-right: 19px;
+        padding-left: 19px;
     }
 
     .facility-feature-copy,
     .facility-card-content,
     .portal-access-card {
-        padding: 25px;
+        padding: 24px;
     }
 
     .large-placeholder,
     .gallery-wide {
-        min-height: 330px;
+        min-height: 320px;
     }
 
-    .future-gallery-grid {
-        gap: 12px;
+    .auth-introduction h1 {
+        font-size: 36px;
     }
 
-    .ashesi-footer {
-        padding: 35px 20px;
-    }
-
-    .footer-brand {
-        align-items: flex-start;
-        flex-direction: column;
+    .dashboard-welcome h1 {
+        font-size: 34px;
     }
 
     .footer-brand div {
