@@ -302,3 +302,43 @@ tbody tr:hover {
         padding: 18px;
     }
 }
+.auth-main {
+    width: min(700px, 92%);
+}
+
+.auth-card {
+    padding: 35px;
+}
+
+.auth-card > p {
+    margin-bottom: 25px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.auth-link {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.auth-link a {
+    color: #176b87;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+.auth-page .message {
+    max-width: 700px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 750px) {
+    .auth-card {
+        padding: 20px;
+    }
+}
