@@ -14,21 +14,25 @@
     </header>
 
     <main>
+        {% if request.args.get("message") %}
+            <div class="message">{{ request.args.get("message") }}</div>
+        {% endif %}
+
         <section class="card portal-section">
-            <h2>Select a Portal</h2>
-            <p>Choose the portal that matches your role.</p>
+            <h2>Welcome to LabSync</h2>
+            <p>Register with your Ashesi school email or sign in to access your assigned portal.</p>
 
             <div class="portal-options">
-                <a href="{{ url_for('student_portal') }}" class="portal-card">
-                    <h3>Student Portal</h3>
-                    <p>View available equipment, submit booking requests, and check booking status.</p>
-                    <span class="portal-button">Enter Student Portal</span>
+                <a href="{{ url_for('register') }}" class="portal-card">
+                    <h3>Student Registration</h3>
+                    <p>Create a student account using an email address ending in @ashesi.edu.gh.</p>
+                    <span class="portal-button">Register</span>
                 </a>
 
-                <a href="{{ url_for('admin_portal') }}" class="portal-card">
-                    <h3>Admin/Technician Portal</h3>
-                    <p>Manage equipment, approve or deny bookings, and record returned equipment.</p>
-                    <span class="portal-button">Enter Admin Portal</span>
+                <a href="{{ url_for('login') }}" class="portal-card">
+                    <h3>Account Sign In</h3>
+                    <p>Students, administrators, and technicians sign in here to access the correct portal.</p>
+                    <span class="portal-button">Sign In</span>
                 </a>
             </div>
         </section>
