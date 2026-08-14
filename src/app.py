@@ -47,9 +47,45 @@ def save_bookings(booking_list):
     save_json(BOOKINGS_FILE, booking_list)
 
 
+def find_equipment(equipment_list, equipment_id):
+    for equipment in equipment_list:
+        saved_id = equipment.get("equipment_id", equipment.get("id", ""))
+
+        if saved_id.lower() == equipment_id.lower():
+            return equipment
+
+    return None
+
+
+def find_booking(booking_list, booking_id):
+    for booking in booking_list:
+        if booking.get("booking_id", "").lower() == booking_id.lower():
+            return booking
+
+    return None
+
+
 @app.route("/")
 def home():
-    return render_template("index.html", equipment_list=read_equipment(), booking_list=read_bookings())
+    return render_template("index.html")
+
+
+@app.route("/student")
+def student_portal():
+    return render_template(
+        "student.html",
+        equipment_list=read_equipment(),
+        booking_list=read_bookings()
+    )
+
+
+@app.route("/admin")
+def admin_portal():
+    return render_template(
+        "admin.html",
+        equipment_list=read_equipment(),
+        booking_list=read_bookings()
+    )
 
 
 @app.route("/add", methods=["POST"])
@@ -60,7 +96,7 @@ def add_equipment():
     quantity_text = request.form.get("quantity", "").strip()
 
     if not equipment_id or not name or not category or not quantity_text:
-        return redirect(url_for("home", message="Please complete every equipment field."))
+        return redirect(url_for("admin_portal", message="Please complete every equipment field."))
 
     try:
         quantity = int(quantity_text)
@@ -68,15 +104,12 @@ def add_equipment():
         if quantity <= 0:
             raise ValueError
     except ValueError:
-        return redirect(url_for("home", message="Quantity must be a positive whole number."))
+        return redirect(url_for("admin_portal", message="Quantity must be a positive whole number."))
 
     equipment_list = read_equipment()
 
-    for saved_equipment in equipment_list:
-        saved_id = saved_equipment.get("equipment_id", saved_equipment.get("id", ""))
-
-        if saved_id.lower() == equipment_id.lower():
-            return redirect(url_for("home", message="That equipment ID already exists."))
+    if find_equipment(equipment_list, equipment_id):
+        return redirect(url_for("admin_portal", message="That equipment ID already exists."))
 
     new_equipment = Equipment(
         equipment_id=equipment_id,
@@ -92,7 +125,7 @@ def add_equipment():
     equipment_list.append(new_equipment.display_details())
     save_equipment(equipment_list)
 
-    return redirect(url_for("home", message="Equipment added successfully."))
+    return redirect(url_for("admin_portal", message="Equipment added successfully."))
 
 
 @app.route("/delete/<equipment_id>", methods=["POST"])
@@ -101,8 +134,8 @@ def delete_equipment(equipment_id):
     booking_list = read_bookings()
 
     for booking in booking_list:
-        if booking.get("equipment", "").lower() == equipment_id.lower() and booking.get("status") in {"Active", "Overdue"}:
-            return redirect(url_for("home", message="This equipment has an active booking and cannot be deleted."))
+        if booking.get("equipment", "").lower() == equipment_id.lower() and booking.get("status") in {"Pending", "Approved", "Active", "Overdue"}:
+            return redirect(url_for("admin_portal", message="This equipment has an unfinished booking and cannot be deleted."))
 
     updated_list = [
         equipment
@@ -111,7 +144,7 @@ def delete_equipment(equipment_id):
     ]
 
     save_equipment(updated_list)
-    return redirect(url_for("home", message="Equipment deleted successfully."))
+    return redirect(url_for("admin_portal", message="Equipment deleted successfully."))
 
 
 @app.route("/book", methods=["POST"])
@@ -123,7 +156,7 @@ def book_equipment():
     purpose = request.form.get("purpose", "").strip()
 
     if not student or not equipment_id or not quantity_text or not return_date or not purpose:
-        return redirect(url_for("home", message="Please complete every booking field."))
+        return redirect(url_for("student_portal", message="Please complete every booking field."))
 
     try:
         quantity = int(quantity_text)
@@ -131,41 +164,35 @@ def book_equipment():
         if quantity <= 0:
             raise ValueError
     except ValueError:
-        return redirect(url_for("home", message="Booking quantity must be a positive whole number."))
+        return redirect(url_for("student_portal", message="Booking quantity must be a positive whole number."))
 
     try:
         chosen_return_date = date.fromisoformat(return_date)
 
         if chosen_return_date < date.today():
-            return redirect(url_for("home", message="The return date cannot be in the past."))
+            return redirect(url_for("student_portal", message="The return date cannot be in the past."))
     except ValueError:
-        return redirect(url_for("home", message="Please enter a valid return date."))
+        return redirect(url_for("student_portal", message="Please enter a valid return date."))
 
     equipment_list = read_equipment()
-    selected_equipment = None
-
-    for equipment in equipment_list:
-        saved_id = equipment.get("equipment_id", equipment.get("id", ""))
-
-        if saved_id.lower() == equipment_id.lower():
-            selected_equipment = equipment
-            break
+    selected_equipment = find_equipment(equipment_list, equipment_id)
 
     if selected_equipment is None:
-        return redirect(url_for("home", message="The selected equipment was not found."))
+        return redirect(url_for("student_portal", message="The selected equipment was not found."))
 
     available_quantity = selected_equipment.get("available_quantity", selected_equipment.get("quantity", 1))
 
     if quantity > available_quantity:
-        return redirect(url_for("home", message="There is not enough equipment available."))
+        return redirect(url_for("student_portal", message="There is not enough equipment available."))
 
     booking_list = read_bookings()
-    booking_id = f"BK{len(booking_list) + 1:03d}"
-
+    booking_number = len(booking_list) + 1
+    booking_id = f"BK{booking_number:03d}"
     existing_ids = {booking.get("booking_id", "") for booking in booking_list}
 
     while booking_id in existing_ids:
-        booking_id = f"BK{int(booking_id[2:]) + 1:03d}"
+        booking_number += 1
+        booking_id = f"BK{booking_number:03d}"
 
     new_booking = Booking(
         booking_id=booking_id,
@@ -176,60 +203,94 @@ def book_equipment():
         return_time=chosen_return_date,
         purpose=purpose,
         quantity=quantity,
-        status="Active"
+        status="Pending"
     )
 
     booking_list.append(new_booking.display_booking_details())
-
-    selected_equipment["available_quantity"] = available_quantity - quantity
-
-    if selected_equipment["available_quantity"] == 0:
-        selected_equipment["status"] = "unavailable"
-    else:
-        selected_equipment["status"] = "available"
-
     save_bookings(booking_list)
-    save_equipment(equipment_list)
 
-    return redirect(url_for("home", message=f"Booking {booking_id} created successfully."))
+    return redirect(url_for("student_portal", message=f"Booking {booking_id} was submitted for approval."))
+
+
+@app.route("/approve/<booking_id>", methods=["POST"])
+def approve_booking(booking_id):
+    booking_list = read_bookings()
+    equipment_list = read_equipment()
+    booking = find_booking(booking_list, booking_id)
+
+    if booking is None:
+        return redirect(url_for("admin_portal", message="Booking not found."))
+
+    if booking.get("status") != "Pending":
+        return redirect(url_for("admin_portal", message="Only pending bookings can be approved."))
+
+    equipment = find_equipment(equipment_list, booking.get("equipment", ""))
+
+    if equipment is None:
+        return redirect(url_for("admin_portal", message="The equipment for this booking was not found."))
+
+    requested_quantity = booking.get("quantity", 1)
+    available_quantity = equipment.get("available_quantity", equipment.get("quantity", 1))
+
+    if requested_quantity > available_quantity:
+        return redirect(url_for("admin_portal", message="There is not enough equipment available to approve this booking."))
+
+    equipment["available_quantity"] = available_quantity - requested_quantity
+    equipment["status"] = "unavailable" if equipment["available_quantity"] == 0 else "available"
+    booking["status"] = "Active"
+    booking["admin_comment"] = request.form.get("comment", "").strip()
+
+    save_equipment(equipment_list)
+    save_bookings(booking_list)
+
+    return redirect(url_for("admin_portal", message=f"Booking {booking_id} was approved."))
+
+
+@app.route("/deny/<booking_id>", methods=["POST"])
+def deny_booking(booking_id):
+    booking_list = read_bookings()
+    booking = find_booking(booking_list, booking_id)
+
+    if booking is None:
+        return redirect(url_for("admin_portal", message="Booking not found."))
+
+    if booking.get("status") != "Pending":
+        return redirect(url_for("admin_portal", message="Only pending bookings can be denied."))
+
+    booking["status"] = "Denied"
+    booking["admin_comment"] = request.form.get("comment", "").strip()
+    save_bookings(booking_list)
+
+    return redirect(url_for("admin_portal", message=f"Booking {booking_id} was denied."))
 
 
 @app.route("/return/<booking_id>", methods=["POST"])
 def return_equipment(booking_id):
     booking_list = read_bookings()
     equipment_list = read_equipment()
-    selected_booking = None
+    booking = find_booking(booking_list, booking_id)
 
-    for booking in booking_list:
-        if booking.get("booking_id", "").lower() == booking_id.lower():
-            selected_booking = booking
-            break
+    if booking is None:
+        return redirect(url_for("admin_portal", message="Booking not found."))
 
-    if selected_booking is None:
-        return redirect(url_for("home", message="Booking not found."))
+    if booking.get("status") not in {"Active", "Overdue"}:
+        return redirect(url_for("admin_portal", message="Only active or overdue bookings can be returned."))
 
-    if selected_booking.get("status") not in {"Active", "Overdue"}:
-        return redirect(url_for("home", message="This booking has already been returned."))
+    equipment = find_equipment(equipment_list, booking.get("equipment", ""))
 
-    equipment_id = selected_booking.get("equipment", "")
-    returned_quantity = selected_booking.get("quantity", 1)
+    if equipment is not None:
+        total_quantity = equipment.get("quantity", 1)
+        available_quantity = equipment.get("available_quantity", total_quantity)
+        returned_quantity = booking.get("quantity", 1)
+        equipment["available_quantity"] = min(total_quantity, available_quantity + returned_quantity)
+        equipment["status"] = "available"
 
-    for equipment in equipment_list:
-        saved_id = equipment.get("equipment_id", equipment.get("id", ""))
+    booking["status"] = "Returned"
 
-        if saved_id.lower() == equipment_id.lower():
-            total_quantity = equipment.get("quantity", 1)
-            available_quantity = equipment.get("available_quantity", total_quantity)
-            equipment["available_quantity"] = min(total_quantity, available_quantity + returned_quantity)
-            equipment["status"] = "available"
-            break
-
-    selected_booking["status"] = "Returned"
-
-    save_bookings(booking_list)
     save_equipment(equipment_list)
+    save_bookings(booking_list)
 
-    return redirect(url_for("home", message=f"Booking {booking_id} returned successfully."))
+    return redirect(url_for("admin_portal", message=f"Booking {booking_id} was returned successfully."))
 
 
 if __name__ == "__main__":
