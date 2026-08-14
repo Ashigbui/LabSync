@@ -2,133 +2,150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sign in to the LabSync laboratory equipment booking system">
-    <title>Sign In | LabSync</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Sign in to Ashesi Fab Lab LabSync"
+    >
+
+    <title>Sign In | Ashesi Fab Lab</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
-<body class="auth-page">
-    <header class="site-header">
-        <a href="{{ url_for('home') }}" class="brand">
+<body class="account-page">
+    <header class="service-header">
+        <a href="{{ url_for('home') }}" class="service-brand">
             <img
                 src="{{ url_for('static', filename='ashesi-logo.png') }}"
                 alt="Ashesi University"
-                class="brand-logo"
             >
 
-            <div class="brand-text">
-                <span class="brand-name">LabSync</span>
-                <span class="brand-description">
-                    Laboratory Equipment Booking System
-                </span>
-            </div>
+            <span>Fab Lab · LabSync</span>
         </a>
 
-        <nav class="main-navigation" aria-label="Main navigation">
-            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
-            <a href="{{ url_for('register') }}" class="nav-button">
-                Create Account
-            </a>
+        <nav class="service-navigation" aria-label="Account navigation">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('register') }}">Create Account</a>
         </nav>
     </header>
 
-    <main class="auth-layout">
-        <section class="auth-introduction">
-            <span class="eyebrow">Welcome back</span>
+    <main class="signin-layout">
+        <section class="signin-visual">
+            <div class="signin-visual-overlay"></div>
 
-            <h1>Access your LabSync workspace.</h1>
+            <div class="signin-visual-content">
+                <h1>Welcome to the Ashesi Fab Lab.</h1>
 
-            <p>
-                Sign in to request laboratory equipment, check booking status,
-                or manage laboratory operations.
-            </p>
+                <p>
+                    Access equipment, manage booking requests, and support
+                    responsible making across the Ashesi community.
+                </p>
+            </div>
 
-            <div class="auth-benefits">
-                <div class="auth-benefit">
-                    <span>01</span>
-                    <p>Secure access for the Ashesi community</p>
-                </div>
-
-                <div class="auth-benefit">
-                    <span>02</span>
-                    <p>Role-based student and staff portals</p>
-                </div>
-
-                <div class="auth-benefit">
-                    <span>03</span>
-                    <p>Centralised equipment and booking records</p>
-                </div>
+            <div class="signin-photo-note">
+                Future Fab Lab photograph
             </div>
         </section>
 
-        <section class="auth-card">
-            <div class="auth-card-heading">
-                <span class="panel-icon">LS</span>
-
-                <div>
-                    <h2>Sign in</h2>
-                    <p>Enter your LabSync account details.</p>
-                </div>
-            </div>
-
-            {% if request.args.get("message") %}
-                <div class="message">
-                    {{ request.args.get("message") }}
-                </div>
-            {% endif %}
-
-            <form action="{{ url_for('login') }}" method="post" class="auth-form">
-                <div class="form-group">
-                    <label for="email">Ashesi email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="name@ashesi.edu.gh"
-                        autocomplete="email"
-                        required
+        <section class="signin-panel">
+            <div class="signin-form-container">
+                <a href="{{ url_for('home') }}" class="mobile-account-logo">
+                    <img
+                        src="{{ url_for('static', filename='ashesi-logo.png') }}"
+                        alt="Ashesi University"
                     >
-                </div>
+                </a>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
+                <h2>Sign in to LabSync</h2>
+
+                <p class="signin-description">
+                    Enter your account details to continue to your assigned
+                    portal.
+                </p>
+
+                {% if request.args.get("message") %}
+                    <div class="message account-message">
+                        {{ request.args.get("message") }}
+                    </div>
+                {% endif %}
+
+                <form
+                    action="{{ url_for('login') }}"
+                    method="post"
+                    class="signin-form"
+                >
+                    <div class="form-group">
+                        <label for="email">Ashesi email</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="name@ashesi.edu.gh"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="burgundy-button account-submit-button"
                     >
-                </div>
+                        Sign In
+                    </button>
+                </form>
 
-                <button type="submit" class="primary-button full-width-button">
-                    Sign In
-                </button>
-            </form>
+                <p class="account-alternative">
+                    New student?
+                    <a href="{{ url_for('register') }}">
+                        Create an account
+                    </a>
+                </p>
 
-            <div class="auth-divider">
-                <span>New to LabSync?</span>
+                <p class="account-support">
+                    Staff accounts are created by an authorised LabSync
+                    administrator.
+                </p>
             </div>
-
-            <a href="{{ url_for('register') }}" class="secondary-button full-width-button">
-                Create a Student Account
-            </a>
-
-            <p class="security-note">
-                Your access is determined by your assigned LabSync role.
-            </p>
         </section>
     </main>
-
-    <footer class="site-footer">
-        <div>
-            <strong>LabSync</strong>
-            <span>Ashesi University Laboratory Services</span>
-        </div>
-
-        <p>Secure laboratory equipment access and management.</p>
-    </footer>
 </body>
 </html>
