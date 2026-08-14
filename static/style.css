@@ -23,12 +23,31 @@ header h1 {
 }
 
 header p {
-    margin: 0;
+    margin: 0 0 18px;
     color: #dbeafe;
 }
 
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    padding: 9px 15px;
+    color: white;
+    text-decoration: none;
+    background: #176b87;
+    border-radius: 6px;
+}
+
+nav a:hover {
+    background: #12546b;
+}
+
 main {
-    width: min(1100px, 92%);
+    width: min(1200px, 92%);
     margin: 30px auto;
 }
 
@@ -45,9 +64,9 @@ main {
     color: #12355b;
 }
 
-form:not(.delete-form):not(.return-form) {
+form:not(.delete-form):not(.return-form):not(.action-form) {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 180px 1fr;
     gap: 14px;
     align-items: center;
 }
@@ -72,7 +91,8 @@ textarea {
     resize: vertical;
 }
 
-button {
+button,
+.portal-button {
     padding: 11px 18px;
     color: white;
     font-size: 15px;
@@ -83,12 +103,13 @@ button {
     cursor: pointer;
 }
 
-form:not(.delete-form):not(.return-form) button {
+form:not(.delete-form):not(.return-form):not(.action-form) button {
     grid-column: 2;
     justify-self: start;
 }
 
-button:hover {
+button:hover,
+.portal-button:hover {
     background: #12546b;
 }
 
@@ -114,6 +135,7 @@ th,
 td {
     padding: 13px;
     text-align: left;
+    vertical-align: middle;
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -127,42 +149,156 @@ tbody tr:hover {
 }
 
 .delete-form,
-.return-form {
+.return-form,
+.action-form {
     margin: 0;
 }
 
-.delete-button {
+.delete-button,
+.deny-button {
     padding: 8px 12px;
     background: #b91c1c;
 }
 
-.delete-button:hover {
+.delete-button:hover,
+.deny-button:hover {
     background: #991b1b;
 }
 
-.return-button {
+.return-button,
+.approve-button {
     padding: 8px 12px;
     background: #15803d;
 }
 
-.return-button:hover {
+.return-button:hover,
+.approve-button:hover {
     background: #166534;
 }
 
-@media (max-width: 650px) {
-    form:not(.delete-form):not(.return-form) {
+.action-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.action-form input {
+    min-width: 150px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.action-form button {
+    white-space: nowrap;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.status-pending {
+    color: #854d0e;
+    background: #fef9c3;
+}
+
+.status-active,
+.status-approved {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.status-denied,
+.status-cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.status-returned {
+    color: #1e40af;
+    background: #dbeafe;
+}
+
+.status-overdue {
+    color: #9a3412;
+    background: #ffedd5;
+}
+
+.portal-section {
+    padding: 40px;
+    text-align: center;
+}
+
+.portal-section > p {
+    margin-bottom: 30px;
+    color: #64748b;
+}
+
+.portal-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.portal-card {
+    display: block;
+    padding: 30px;
+    color: #1f2937;
+    text-decoration: none;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.portal-card:hover {
+    transform: translateY(-4px);
+    border-color: #176b87;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
+
+.portal-card h3 {
+    margin-top: 0;
+    color: #12355b;
+    font-size: 24px;
+}
+
+.portal-card p {
+    min-height: 55px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.portal-button {
+    display: inline-block;
+}
+
+@media (max-width: 750px) {
+    form:not(.delete-form):not(.return-form):not(.action-form) {
         grid-template-columns: 1fr;
     }
 
-    form:not(.delete-form):not(.return-form) button {
+    form:not(.delete-form):not(.return-form):not(.action-form) button {
         grid-column: 1;
+    }
+
+    .portal-options {
+        grid-template-columns: 1fr;
+    }
+
+    .action-form {
+        flex-direction: column;
     }
 
     header h1 {
         font-size: 30px;
     }
 
-    .card {
+    .card,
+    .portal-section {
         padding: 18px;
     }
 }
