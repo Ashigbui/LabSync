@@ -2,220 +2,163 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta
-        name="description"
-        content="LabSync laboratory staff management portal"
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
-    <title>Staff Portal | LabSync</title>
+
+    <title>Staff Portal | Ashesi Fab Lab</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
 </head>
 
-<body class="dashboard-page">
-    <header class="site-header">
-        <a href="{{ url_for('admin_portal') }}" class="brand">
+<body class="portal-page">
+    <header class="service-header">
+        <a href="{{ url_for('admin_portal') }}" class="service-brand">
             <img
                 src="{{ url_for('static', filename='ashesi-logo.png') }}"
                 alt="Ashesi University"
-                class="brand-logo"
             >
 
-            <div class="brand-text">
-                <span class="brand-name">LabSync</span>
-                <span class="brand-description">
-                    Admin/Technician Portal
-                </span>
-            </div>
+            <span>Fab Lab · LabSync</span>
         </a>
 
-        <nav class="main-navigation" aria-label="Staff navigation">
-            <span class="user-badge">
+        <nav class="service-navigation" aria-label="Staff navigation">
+            <a href="#equipment">Equipment</a>
+            <a href="#bookings">Bookings</a>
+
+            <span class="signed-in-user">
                 {{ user_name }} · {{ user_role|title }}
             </span>
 
-            <a href="{{ url_for('admin_portal') }}" class="nav-link">
-                Dashboard
-            </a>
-
-            <a href="{{ url_for('logout') }}" class="nav-button">
+            <a href="{{ url_for('logout') }}" class="service-sign-out">
                 Sign Out
             </a>
         </nav>
     </header>
 
-    <main class="dashboard-main">
-        <section class="dashboard-welcome">
+    <main class="portal-main">
+        <section class="portal-title-section">
             <div>
-                <span class="eyebrow">Laboratory operations</span>
-                <h1>Welcome back, {{ user_name }}.</h1>
+                <h1>Admin & Technician Portal</h1>
+
                 <p>
-                    Manage inventory, review booking requests, and record
-                    returned equipment.
+                    Welcome, {{ user_name }}. Manage Fab Lab equipment and
+                    student booking requests.
                 </p>
             </div>
 
-            <a href="#equipment-form" class="primary-button">
-                Add New Equipment
+            <a href="#add-equipment" class="burgundy-button">
+                Add Equipment
             </a>
         </section>
 
         {% if request.args.get("message") %}
-            <div class="message">
+            <div class="message portal-message">
                 {{ request.args.get("message") }}
             </div>
         {% endif %}
 
-        <section class="summary-grid">
-            <article class="summary-card">
-                <span class="summary-label">Equipment records</span>
-                <strong>{{ equipment_list|length }}</strong>
-                <p>Items in the laboratory inventory</p>
-            </article>
+        <section class="portal-section" id="add-equipment">
+            <div class="portal-section-heading">
+                <h2>Add Equipment</h2>
 
-            <article class="summary-card">
-                <span class="summary-label">Booking records</span>
-                <strong>{{ booking_list|length }}</strong>
-                <p>Total requests stored in LabSync</p>
-            </article>
+                <p>
+                    Create a new record in the Fab Lab equipment inventory.
+                </p>
+            </div>
 
-            <article class="summary-card accent-summary-card">
-                <span class="summary-label">Signed-in role</span>
-                <strong>{{ user_role|title }}</strong>
-                <p>Authorised laboratory staff access</p>
-            </article>
-        </section>
+            <form
+                action="{{ url_for('add_equipment') }}"
+                method="post"
+                class="portal-form"
+            >
+                <div class="form-group">
+                    <label for="equipment_id">Equipment ID</label>
 
-        <section class="dashboard-grid">
-            <article class="content-card" id="equipment-form">
-                <div class="card-heading">
-                    <div>
-                        <span class="eyebrow">Inventory</span>
-                        <h2>Add equipment</h2>
-                    </div>
-
-                    <span class="card-icon">+</span>
-                </div>
-
-                <form
-                    action="{{ url_for('add_equipment') }}"
-                    method="post"
-                    class="modern-form"
-                >
-                    <div class="form-group">
-                        <label for="equipment_id">Equipment ID</label>
-
-                        <input
-                            type="text"
-                            id="equipment_id"
-                            name="equipment_id"
-                            placeholder="Example: EQ004"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name">Equipment name</label>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter equipment name"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="category">Category</label>
-
-                        <input
-                            type="text"
-                            id="category"
-                            name="category"
-                            placeholder="Example: Glassware"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-
-                        <input
-                            type="number"
-                            id="quantity"
-                            name="quantity"
-                            min="1"
-                            placeholder="Enter total quantity"
-                            required
-                        >
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="primary-button full-field"
+                    <input
+                        type="text"
+                        id="equipment_id"
+                        name="equipment_id"
+                        placeholder="Example: EQ004"
+                        required
                     >
-                        Add Equipment to Inventory
-                    </button>
-                </form>
-            </article>
-
-            <aside class="content-card guide-card">
-                <div class="card-heading">
-                    <div>
-                        <span class="eyebrow">Staff checklist</span>
-                        <h2>Inventory guidance</h2>
-                    </div>
                 </div>
 
-                <ol class="guide-list">
-                    <li>
-                        <span>1</span>
+                <div class="form-group">
+                    <label for="name">Equipment name</label>
 
-                        <div>
-                            <strong>Use a unique ID</strong>
-                            <p>Each equipment record needs a distinct ID.</p>
-                        </div>
-                    </li>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter equipment name"
+                        required
+                    >
+                </div>
 
-                    <li>
-                        <span>2</span>
+                <div class="form-group">
+                    <label for="category">Category</label>
 
-                        <div>
-                            <strong>Check the quantity</strong>
-                            <p>Record the total number of usable units.</p>
-                        </div>
-                    </li>
+                    <input
+                        type="text"
+                        id="category"
+                        name="category"
+                        placeholder="Example: Glassware"
+                        required
+                    >
+                </div>
 
-                    <li>
-                        <span>3</span>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
 
-                        <div>
-                            <strong>Review requests</strong>
-                            <p>Confirm availability before approval.</p>
-                        </div>
-                    </li>
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="1"
+                        placeholder="Enter total quantity"
+                        required
+                    >
+                </div>
 
-                    <li>
-                        <span>4</span>
-
-                        <div>
-                            <strong>Record every return</strong>
-                            <p>Keep available quantities accurate.</p>
-                        </div>
-                    </li>
-                </ol>
-            </aside>
+                <button
+                    type="submit"
+                    class="burgundy-button full-field form-submit"
+                >
+                    Add Equipment
+                </button>
+            </form>
         </section>
 
-        <section class="content-card">
-            <div class="card-heading">
-                <div>
-                    <span class="eyebrow">Inventory records</span>
-                    <h2>Equipment management</h2>
-                </div>
+        <section class="portal-section" id="equipment">
+            <div class="portal-section-heading">
+                <h2>Equipment Inventory</h2>
+
+                <p>
+                    View and manage the equipment currently recorded in
+                    LabSync.
+                </p>
             </div>
 
             {% if equipment_list %}
@@ -226,7 +169,7 @@
                                 <th>ID</th>
                                 <th>Equipment</th>
                                 <th>Category</th>
-                                <th>Total</th>
+                                <th>Total quantity</th>
                                 <th>Available</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -307,19 +250,23 @@
                 </div>
             {% else %}
                 <div class="empty-state">
-                    <span>0</span>
-                    <h3>No equipment records</h3>
-                    <p>Add the first item using the inventory form.</p>
+                    <h3>No equipment records found.</h3>
+
+                    <p>
+                        Add the first equipment record using the form above.
+                    </p>
                 </div>
             {% endif %}
         </section>
 
-        <section class="content-card">
-            <div class="card-heading">
-                <div>
-                    <span class="eyebrow">Student requests</span>
-                    <h2>Booking management</h2>
-                </div>
+        <section class="portal-section" id="bookings">
+            <div class="portal-section-heading">
+                <h2>Booking Requests</h2>
+
+                <p>
+                    Review student requests, record decisions, and process
+                    returned equipment.
+                </p>
             </div>
 
             {% if booking_list %}
@@ -327,10 +274,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Booking</th>
+                                <th>Booking ID</th>
                                 <th>Student</th>
                                 <th>Equipment</th>
-                                <th>Qty.</th>
+                                <th>Quantity</th>
                                 <th>Return date</th>
                                 <th>Purpose</th>
                                 <th>Status</th>
@@ -476,21 +423,19 @@
                 </div>
             {% else %}
                 <div class="empty-state">
-                    <span>0</span>
-                    <h3>No booking requests</h3>
-                    <p>Student requests will appear here for review.</p>
+                    <h3>No booking requests found.</h3>
+
+                    <p>
+                        Student requests will appear here for staff review.
+                    </p>
                 </div>
             {% endif %}
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div>
-            <strong>LabSync</strong>
-            <span>Ashesi University Laboratory Services</span>
-        </div>
-
-        <p>Laboratory inventory and booking administration.</p>
+    <footer class="simple-footer">
+        <span>Ashesi University Fab Lab</span>
+        <span>LabSync Equipment Management System</span>
     </footer>
 </body>
 </html>
