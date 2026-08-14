@@ -2,159 +2,434 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabSync laboratory equipment booking system">
-    <title>LabSync | Ashesi University</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Ashesi Fab Lab equipment booking and management system"
+    >
+
+    <title>Ashesi Fab Lab | LabSync</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
-<body class="landing-page">
-    <header class="site-header">
-        <a href="{{ url_for('home') }}" class="brand">
+<body class="fablab-home">
+    <header class="ashesi-header">
+        <a href="{{ url_for('home') }}" class="ashesi-brand">
             <img
                 src="{{ url_for('static', filename='ashesi-logo.png') }}"
                 alt="Ashesi University"
-                class="brand-logo"
+                class="ashesi-logo"
             >
 
-            <div class="brand-text">
-                <span class="brand-name">LabSync</span>
-                <span class="brand-description">
-                    Laboratory Equipment Booking System
-                </span>
-            </div>
+            <span class="labsync-label">Fab Lab · LabSync</span>
         </a>
 
-        <nav class="main-navigation" aria-label="Main navigation">
-            <a href="{{ url_for('login') }}" class="nav-link">Sign In</a>
-            <a href="{{ url_for('register') }}" class="nav-button">
-                Create Account
+        <nav class="ashesi-navigation" aria-label="Main navigation">
+            <a href="#about">About</a>
+            <a href="#facilities">Facilities</a>
+            <a href="#process">How It Works</a>
+            <a href="#portal-access">Portal Access</a>
+            <a href="{{ url_for('login') }}" class="header-sign-in">
+                Sign In
             </a>
         </nav>
     </header>
 
-    <main class="landing-main">
+    <main>
         {% if request.args.get("message") %}
-            <div class="message">
+            <div class="message home-message">
                 {{ request.args.get("message") }}
             </div>
         {% endif %}
 
-        <section class="hero">
-            <div class="hero-content">
-                <span class="eyebrow">Ashesi Laboratory Services</span>
+        <section class="fablab-hero">
+            <div class="hero-image-placeholder">
+                <div class="placeholder-grid"></div>
 
-                <h1>
-                    Laboratory access,
-                    <span>made simple.</span>
-                </h1>
+                <div class="hero-overlay"></div>
 
-                <p class="hero-description">
-                    Discover available laboratory equipment, submit booking
-                    requests, track approvals, and manage returns from one
-                    secure platform.
-                </p>
+                <div class="fablab-hero-content">
+                    <span class="hero-kicker">
+                        Ashesi University Fab Lab
+                    </span>
 
-                <div class="hero-actions">
-                    <a href="{{ url_for('login') }}" class="primary-button">
-                        Sign In to LabSync
-                    </a>
+                    <h1>
+                        Where ideas become
+                        <em>real.</em>
+                    </h1>
 
-                    <a href="{{ url_for('register') }}" class="secondary-button">
-                        Create Student Account
-                    </a>
-                </div>
+                    <p>
+                        A collaborative fabrication and makerspace where
+                        students explore, design, prototype, and build
+                        solutions for the world around them.
+                    </p>
 
-                <p class="school-email-note">
-                    Student registration requires an
-                    <strong>@ashesi.edu.gh</strong> email address.
-                </p>
-            </div>
+                    <div class="fablab-hero-actions">
+                        <a href="#about" class="burgundy-button">
+                            Discover the Fab Lab
+                        </a>
 
-            <aside class="hero-panel">
-                <div class="hero-panel-heading">
-                    <span class="panel-icon">LS</span>
-
-                    <div>
-                        <h2>One connected system</h2>
-                        <p>For students and laboratory staff</p>
+                        <a href="#portal-access" class="light-outline-button">
+                            Access LabSync
+                        </a>
                     </div>
                 </div>
 
-                <div class="feature-list">
-                    <article class="feature-item">
-                        <span class="feature-number">01</span>
-
-                        <div>
-                            <h3>Find equipment</h3>
-                            <p>View quantities and availability in real time.</p>
-                        </div>
-                    </article>
-
-                    <article class="feature-item">
-                        <span class="feature-number">02</span>
-
-                        <div>
-                            <h3>Request a booking</h3>
-                            <p>Submit equipment requests for laboratory work.</p>
-                        </div>
-                    </article>
-
-                    <article class="feature-item">
-                        <span class="feature-number">03</span>
-
-                        <div>
-                            <h3>Track progress</h3>
-                            <p>See approvals, comments, returns, and status.</p>
-                        </div>
-                    </article>
+                <div class="future-photo-label">
+                    <span>Future Fab Lab photograph</span>
+                    <small>
+                        Replace this area after uploading your image
+                    </small>
                 </div>
-            </aside>
-        </section>
-
-        <section class="role-section">
-            <div class="section-heading">
-                <span class="eyebrow">Built for the Ashesi community</span>
-                <h2>The right workspace for every role</h2>
             </div>
 
-            <div class="role-grid">
-                <article class="role-card">
-                    <div class="role-icon">ST</div>
-                    <h3>Students</h3>
+            <a href="#about" class="scroll-cue" aria-label="Scroll to learn more">
+                <span>Explore</span>
+                <strong>↓</strong>
+            </a>
+        </section>
+
+        <section class="fablab-introduction" id="about">
+            <div class="section-number">01</div>
+
+            <div class="introduction-heading">
+                <span class="section-kicker">About the space</span>
+
+                <h2>
+                    A place to imagine,
+                    experiment, and build.
+                </h2>
+            </div>
+
+            <div class="introduction-copy">
+                <p class="large-copy">
+                    Opened in 2018, Ashesi’s Fab Lab provides a dedicated
+                    space where students can design and fabricate products,
+                    develop prototypes, and turn academic concepts into
+                    practical solutions.
+                </p>
+
+                <p>
+                    The building brings together laboratories and makerspaces
+                    for Engineering and Computer Science students and faculty.
+                    It supports hands-on learning, interdisciplinary
+                    collaboration, creativity, and the development of ideas
+                    for projects and startups.
+                </p>
+
+                <a href="#facilities" class="text-link">
+                    Explore what happens here
+                    <span>→</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="fablab-quote">
+            <div class="quote-mark">“</div>
+
+            <blockquote>
+                The Fab Lab is a space for learning through making—where
+                curiosity, technical skill, and collaboration meet.
+            </blockquote>
+
+            <p>Ashesi Fab Lab · Berekuso Campus</p>
+        </section>
+
+        <section class="facilities-section" id="facilities">
+            <div class="centered-section-heading">
+                <span class="section-kicker">Inside the Fab Lab</span>
+
+                <h2>Tools and spaces for making.</h2>
+
+                <p>
+                    LabSync helps the Ashesi community discover, request,
+                    and responsibly use equipment across the fabrication
+                    laboratory.
+                </p>
+            </div>
+
+            <div class="facility-feature">
+                <div class="facility-image-placeholder large-placeholder">
+                    <span>Fab Lab workshop photograph</span>
+                </div>
+
+                <div class="facility-feature-copy">
+                    <span class="facility-index">01</span>
+
+                    <h3>Digital fabrication</h3>
+
                     <p>
-                        Browse available equipment, submit requests, and follow
-                        each booking from pending approval to return.
+                        Develop physical prototypes using digital design
+                        processes and fabrication equipment available within
+                        the laboratory.
                     </p>
 
-                    <a href="{{ url_for('register') }}">
-                        Register as a student →
-                    </a>
+                    <ul>
+                        <li>Prototype development</li>
+                        <li>Computer-aided design</li>
+                        <li>Project fabrication</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="facility-card-grid">
+                <article class="facility-card">
+                    <div class="facility-image-placeholder">
+                        <span>Equipment photograph</span>
+                    </div>
+
+                    <div class="facility-card-content">
+                        <span class="facility-index">02</span>
+                        <h3>Engineering tools</h3>
+
+                        <p>
+                            Access equipment and tools that support practical
+                            engineering work, experimentation, and testing.
+                        </p>
+                    </div>
                 </article>
 
-                <article class="role-card featured-role">
-                    <div class="role-icon">AT</div>
-                    <h3>Administrators & Technicians</h3>
+                <article class="facility-card">
+                    <div class="facility-image-placeholder">
+                        <span>Student project photograph</span>
+                    </div>
+
+                    <div class="facility-card-content">
+                        <span class="facility-index">03</span>
+                        <h3>Student projects</h3>
+
+                        <p>
+                            Move from early concepts to working models for
+                            courses, research, capstones, and startup ideas.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="facility-card">
+                    <div class="facility-image-placeholder">
+                        <span>Collaboration photograph</span>
+                    </div>
+
+                    <div class="facility-card-content">
+                        <span class="facility-index">04</span>
+                        <h3>Collaborative making</h3>
+
+                        <p>
+                            Work across disciplines with students, faculty,
+                            technicians, and project teams.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="process-section" id="process">
+            <div class="process-heading">
+                <span class="section-kicker light-kicker">
+                    Using LabSync
+                </span>
+
+                <h2>From equipment search to safe return.</h2>
+
+                <p>
+                    LabSync keeps Fab Lab equipment requests organised,
+                    transparent, and easy to track.
+                </p>
+            </div>
+
+            <div class="process-steps">
+                <article class="process-step">
+                    <span>01</span>
+                    <h3>Sign in</h3>
                     <p>
-                        Manage inventory, review requests, record returns, and
-                        keep laboratory operations organised.
+                        Access the workspace assigned to your LabSync role.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span>02</span>
+                    <h3>Find equipment</h3>
+                    <p>
+                        Browse inventory and check current availability.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span>03</span>
+                    <h3>Submit a request</h3>
+                    <p>
+                        Select a quantity, purpose, and planned return date.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span>04</span>
+                    <h3>Track and return</h3>
+                    <p>
+                        Follow approval status and return equipment on time.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="portal-access-section" id="portal-access">
+            <div class="portal-access-heading">
+                <span class="section-kicker">LabSync access</span>
+
+                <h2>Choose your workspace.</h2>
+
+                <p>
+                    Students and laboratory staff use different tools while
+                    working from the same connected equipment records.
+                </p>
+            </div>
+
+            <div class="portal-access-grid">
+                <article class="portal-access-card student-access-card">
+                    <div class="portal-card-top">
+                        <span class="portal-type">Student</span>
+                        <span class="portal-arrow">↗</span>
+                    </div>
+
+                    <h3>Student Portal</h3>
+
+                    <p>
+                        Browse available equipment, submit booking requests,
+                        and follow approval and return status.
                     </p>
 
-                    <a href="{{ url_for('login') }}">
-                        Sign in to the staff portal →
-                    </a>
+                    <ul>
+                        <li>View equipment availability</li>
+                        <li>Request equipment</li>
+                        <li>Track booking status</li>
+                        <li>Read staff comments</li>
+                    </ul>
+
+                    <div class="portal-card-actions">
+                        <a
+                            href="{{ url_for('register') }}"
+                            class="burgundy-button"
+                        >
+                            Create Student Account
+                        </a>
+
+                        <a
+                            href="{{ url_for('login') }}"
+                            class="portal-text-link"
+                        >
+                            Student sign in →
+                        </a>
+                    </div>
                 </article>
+
+                <article class="portal-access-card staff-access-card">
+                    <div class="portal-card-top">
+                        <span class="portal-type">Staff</span>
+                        <span class="portal-arrow">↗</span>
+                    </div>
+
+                    <h3>Admin & Technician Portal</h3>
+
+                    <p>
+                        Manage Fab Lab inventory, review requests, record
+                        returns, and maintain accurate equipment records.
+                    </p>
+
+                    <ul>
+                        <li>Add and manage equipment</li>
+                        <li>Approve or deny requests</li>
+                        <li>Record equipment returns</li>
+                        <li>Monitor laboratory activity</li>
+                    </ul>
+
+                    <div class="portal-card-actions">
+                        <a
+                            href="{{ url_for('login') }}"
+                            class="black-button"
+                        >
+                            Staff Sign In
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="future-gallery-section">
+            <div>
+                <span class="section-kicker">Coming next</span>
+
+                <h2>A closer look at making at Ashesi.</h2>
+            </div>
+
+            <p>
+                We will add authentic photographs of the Fab Lab, equipment,
+                student projects, and collaborative work here.
+            </p>
+
+            <div class="future-gallery-grid">
+                <div class="gallery-placeholder gallery-wide">
+                    <span>Future photograph 01</span>
+                </div>
+
+                <div class="gallery-placeholder">
+                    <span>Future photograph 02</span>
+                </div>
+
+                <div class="gallery-placeholder">
+                    <span>Future photograph 03</span>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div>
-            <strong>LabSync</strong>
-            <span>Ashesi University Laboratory Services</span>
+    <footer class="ashesi-footer">
+        <div class="footer-brand">
+            <img
+                src="{{ url_for('static', filename='ashesi-logo.png') }}"
+                alt="Ashesi University"
+            >
+
+            <div>
+                <strong>Fab Lab · LabSync</strong>
+                <span>Berekuso, Ghana</span>
+            </div>
         </div>
 
-        <p>Designed to support safe and efficient laboratory access.</p>
+        <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#facilities">Facilities</a>
+            <a href="#process">How It Works</a>
+            <a href="{{ url_for('login') }}">Sign In</a>
+        </div>
+
+        <p class="footer-note">
+            Supporting safe, creative, and responsible making at Ashesi.
+        </p>
     </footer>
 </body>
 </html>
