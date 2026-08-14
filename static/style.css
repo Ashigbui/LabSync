@@ -276,32 +276,6 @@ tbody tr:hover {
     display: inline-block;
 }
 
-@media (max-width: 750px) {
-    form:not(.delete-form):not(.return-form):not(.action-form) {
-        grid-template-columns: 1fr;
-    }
-
-    form:not(.delete-form):not(.return-form):not(.action-form) button {
-        grid-column: 1;
-    }
-
-    .portal-options {
-        grid-template-columns: 1fr;
-    }
-
-    .action-form {
-        flex-direction: column;
-    }
-
-    header h1 {
-        font-size: 30px;
-    }
-
-    .card,
-    .portal-section {
-        padding: 18px;
-    }
-}
 .auth-main {
     width: min(700px, 92%);
 }
@@ -338,6 +312,31 @@ tbody tr:hover {
 }
 
 @media (max-width: 750px) {
+    form:not(.delete-form):not(.return-form):not(.action-form) {
+        grid-template-columns: 1fr;
+    }
+
+    form:not(.delete-form):not(.return-form):not(.action-form) button {
+        grid-column: 1;
+    }
+
+    .portal-options {
+        grid-template-columns: 1fr;
+    }
+
+    .action-form {
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    .card,
+    .portal-section {
+        padding: 18px;
+    }
+
     .auth-card {
         padding: 20px;
     }
