@@ -3,51 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | LabSync</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta
+        name="description"
+        content="Create a LabSync student account"
+    >
+    <title>Create Account | LabSync</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
 <body class="auth-page">
-    <header>
-        <h1>LabSync</h1>
-        <p>Create a Student Account</p>
+    <header class="site-header">
+        <a href="{{ url_for('home') }}" class="brand">
+            <img
+                src="{{ url_for('static', filename='ashesi-logo.png') }}"
+                alt="Ashesi University"
+                class="brand-logo"
+            >
 
-        <nav>
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('login') }}">Sign In</a>
+            <div class="brand-text">
+                <span class="brand-name">LabSync</span>
+                <span class="brand-description">
+                    Laboratory Equipment Booking System
+                </span>
+            </div>
+        </a>
+
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('login') }}" class="nav-button">
+                Sign In
+            </a>
         </nav>
     </header>
 
-    <main class="auth-main">
-        {% if request.args.get("message") %}
-            <div class="message">{{ request.args.get("message") }}</div>
-        {% endif %}
+    <main class="auth-layout">
+        <section class="auth-introduction">
+            <span class="eyebrow">Student registration</span>
 
-        <section class="card auth-card">
-            <h2>Student Registration</h2>
-            <p>Registration requires an Ashesi school email ending in <strong>@ashesi.edu.gh</strong>.</p>
+            <h1>Start managing your laboratory bookings.</h1>
 
-            <form action="{{ url_for('register') }}" method="post">
-                <label for="full_name">Full name</label>
-                <input type="text" id="full_name" name="full_name" autocomplete="name" required>
+            <p>
+                Create your LabSync account to browse equipment, submit
+                booking requests, and monitor approval and return status.
+            </p>
 
-                <label for="email">Ashesi email</label>
-                <input type="email" id="email" name="email" placeholder="name@ashesi.edu.gh" autocomplete="email" required>
+            <div class="auth-benefits">
+                <div class="auth-benefit">
+                    <span>01</span>
+                    <p>Browse available laboratory equipment</p>
+                </div>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" minlength="8" autocomplete="new-password" required>
+                <div class="auth-benefit">
+                    <span>02</span>
+                    <p>Submit and track booking requests</p>
+                </div>
 
-                <label for="confirm_password">Confirm password</label>
-                <input type="password" id="confirm_password" name="confirm_password" minlength="8" autocomplete="new-password" required>
+                <div class="auth-benefit">
+                    <span>03</span>
+                    <p>Receive staff decisions and comments</p>
+                </div>
+            </div>
+        </section>
 
-                <button type="submit">Register</button>
+        <section class="auth-card">
+            <div class="auth-card-heading">
+                <span class="panel-icon">ST</span>
+
+                <div>
+                    <h2>Create account</h2>
+                    <p>Register as an Ashesi student.</p>
+                </div>
+            </div>
+
+            {% if request.args.get("message") %}
+                <div class="message">
+                    {{ request.args.get("message") }}
+                </div>
+            {% endif %}
+
+            <form
+                action="{{ url_for('register') }}"
+                method="post"
+                class="auth-form"
+            >
+                <div class="form-group">
+                    <label for="full_name">Full name</label>
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Ashesi email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="name@ashesi.edu.gh"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="At least 8 characters"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm password</label>
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        placeholder="Enter the password again"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-button full-width-button"
+                >
+                    Create Student Account
+                </button>
             </form>
 
-            <p class="auth-link">
-                Already registered?
-                <a href="{{ url_for('login') }}">Sign in here</a>.
+            <div class="auth-divider">
+                <span>Already registered?</span>
+            </div>
+
+            <a
+                href="{{ url_for('login') }}"
+                class="secondary-button full-width-button"
+            >
+                Sign In
+            </a>
+
+            <p class="security-note">
+                Registration requires an email ending in
+                <strong>@ashesi.edu.gh</strong>.
             </p>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <div>
+            <strong>LabSync</strong>
+            <span>Ashesi University Laboratory Services</span>
+        </div>
+
+        <p>Secure laboratory equipment access and management.</p>
+    </footer>
 </body>
 </html>
