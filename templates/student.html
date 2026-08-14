@@ -3,63 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="LabSync student equipment booking portal"
+    >
     <title>Student Portal | LabSync</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
-<body>
-    <header>
-        <h1>LabSync</h1>
-        <p>Student Portal — Welcome, {{ user_name }}</p>
+<body class="dashboard-page">
+    <header class="site-header">
+        <a href="{{ url_for('student_portal') }}" class="brand">
+            <img
+                src="{{ url_for('static', filename='ashesi-logo.png') }}"
+                alt="Ashesi University"
+                class="brand-logo"
+            >
 
-        <nav>
-            <a href="{{ url_for('student_portal') }}">Student Portal</a>
-            <a href="{{ url_for('logout') }}">Sign Out</a>
+            <div class="brand-text">
+                <span class="brand-name">LabSync</span>
+                <span class="brand-description">Student Portal</span>
+            </div>
+        </a>
+
+        <nav class="main-navigation" aria-label="Student navigation">
+            <span class="user-badge">{{ user_name }}</span>
+
+            <a href="{{ url_for('student_portal') }}" class="nav-link">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="nav-button">
+                Sign Out
+            </a>
         </nav>
     </header>
 
-    <main>
-        {% if request.args.get("message") %}
-            <div class="message">{{ request.args.get("message") }}</div>
-        {% endif %}
+    <main class="dashboard-main">
+        <section class="dashboard-welcome">
+            <div>
+                <span class="eyebrow">Student workspace</span>
+                <h1>Welcome back, {{ user_name }}.</h1>
+                <p>
+                    Request equipment and follow your bookings from one
+                    dashboard.
+                </p>
+            </div>
 
-        <section class="card">
-            <h2>Book Equipment</h2>
-
-            {% if equipment_list %}
-                <form action="{{ url_for('book_equipment') }}" method="post">
-                    <label for="booking_equipment">Equipment</label>
-                    <select id="booking_equipment" name="booking_equipment" required>
-                        <option value="">Select equipment</option>
-
-                        {% for equipment in equipment_list %}
-                            {% set equipment_id = equipment.get("equipment_id", equipment.get("id", "")) %}
-                            {% set available = equipment.get("available_quantity", equipment.get("quantity", 1)) %}
-
-                            <option value="{{ equipment_id }}" {% if available == 0 %}disabled{% endif %}>
-                                {{ equipment_id }} — {{ equipment.get("name", "") }} — {{ available }} available
-                            </option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="booking_quantity">Quantity required</label>
-                    <input type="number" id="booking_quantity" name="booking_quantity" min="1" required>
-
-                    <label for="return_date">Return date</label>
-                    <input type="date" id="return_date" name="return_date" required>
-
-                    <label for="purpose">Purpose</label>
-                    <textarea id="purpose" name="purpose" rows="3" required></textarea>
-
-                    <button type="submit">Submit Booking Request</button>
-                </form>
-            {% else %}
-                <p>No equipment is currently available.</p>
-            {% endif %}
+            <a href="#booking-form" class="primary-button">
+                New Booking Request
+            </a>
         </section>
 
-        <section class="card">
-            <h2>Available Equipment</h2>
+        {% if request.args.get("message") %}
+            <div class="message">
+                {{ request.args.get("message") }}
+            </div>
+        {% endif %}
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <span class="summary-label">Equipment records</span>
+                <strong>{{ equipment_list|length }}</strong>
+                <p>Items listed in the laboratory inventory</p>
+            </article>
+
+            <article class="summary-card">
+                <span class="summary-label">My bookings</span>
+                <strong>{{ booking_list|length }}</strong>
+                <p>Requests connected to your account</p>
+            </article>
+
+            <article class="summary-card accent-summary-card">
+                <span class="summary-label">Account</span>
+                <strong>Student</strong>
+                <p>Verified LabSync student access</p>
+            </article>
+        </section>
+
+        <section class="dashboard-grid">
+            <article class="content-card booking-card" id="booking-form">
+                <div class="card-heading">
+                    <div>
+                        <span class="eyebrow">New request</span>
+                        <h2>Book equipment</h2>
+                    </div>
+
+                    <span class="card-icon">+</span>
+                </div>
+
+                {% if equipment_list %}
+                    <form
+                        action="{{ url_for('book_equipment') }}"
+                        method="post"
+                        class="modern-form"
+                    >
+                        <div class="form-group full-field">
+                            <label for="booking_equipment">Equipment</label>
+
+                            <select
+                                id="booking_equipment"
+                                name="booking_equipment"
+                                required
+                            >
+                                <option value="">Select available equipment</option>
+
+                                {% for equipment in equipment_list %}
+                                    {% set equipment_id = equipment.get(
+                                        "equipment_id",
+                                        equipment.get("id", "")
+                                    ) %}
+
+                                    {% set available = equipment.get(
+                                        "available_quantity",
+                                        equipment.get("quantity", 1)
+                                    ) %}
+
+                                    <option
+                                        value="{{ equipment_id }}"
+                                        {% if available == 0 %}disabled{% endif %}
+                                    >
+                                        {{ equipment_id }} —
+                                        {{ equipment.get("name", "") }} —
+                                        {{ available }} available
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="booking_quantity">
+                                Quantity required
+                            </label>
+
+                            <input
+                                type="number"
+                                id="booking_quantity"
+                                name="booking_quantity"
+                                min="1"
+                                placeholder="Enter quantity"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="return_date">Return date</label>
+
+                            <input
+                                type="date"
+                                id="return_date"
+                                name="return_date"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full-field">
+                            <label for="purpose">Purpose</label>
+
+                            <textarea
+                                id="purpose"
+                                name="purpose"
+                                rows="4"
+                                placeholder="Briefly explain why you need this equipment"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="primary-button full-field"
+                        >
+                            Submit Booking Request
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="empty-state">
+                        <span>!</span>
+                        <h3>No equipment available</h3>
+                        <p>
+                            The laboratory inventory is currently empty.
+                            Please check again later.
+                        </p>
+                    </div>
+                {% endif %}
+            </article>
+
+            <aside class="content-card guide-card">
+                <div class="card-heading">
+                    <div>
+                        <span class="eyebrow">Before booking</span>
+                        <h2>Quick guide</h2>
+                    </div>
+                </div>
+
+                <ol class="guide-list">
+                    <li>
+                        <span>1</span>
+                        <div>
+                            <strong>Select equipment</strong>
+                            <p>Check that enough units are available.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span>2</span>
+                        <div>
+                            <strong>Submit your request</strong>
+                            <p>Choose a realistic return date and purpose.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span>3</span>
+                        <div>
+                            <strong>Wait for approval</strong>
+                            <p>A technician or administrator reviews it.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span>4</span>
+                        <div>
+                            <strong>Return responsibly</strong>
+                            <p>Return equipment by the approved date.</p>
+                        </div>
+                    </li>
+                </ol>
+            </aside>
+        </section>
+
+        <section class="content-card">
+            <div class="card-heading">
+                <div>
+                    <span class="eyebrow">Laboratory inventory</span>
+                    <h2>Available equipment</h2>
+                </div>
+            </div>
 
             {% if equipment_list %}
                 <div class="table-container">
@@ -67,9 +249,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Equipment</th>
                                 <th>Category</th>
-                                <th>Total quantity</th>
+                                <th>Total</th>
                                 <th>Available</th>
                                 <th>Status</th>
                             </tr>
@@ -77,68 +259,159 @@
 
                         <tbody>
                             {% for equipment in equipment_list %}
-                                {% set equipment_id = equipment.get("equipment_id", equipment.get("id", "")) %}
+                                {% set equipment_id = equipment.get(
+                                    "equipment_id",
+                                    equipment.get("id", "")
+                                ) %}
+
+                                {% set available = equipment.get(
+                                    "available_quantity",
+                                    equipment.get("quantity", 1)
+                                ) %}
 
                                 <tr>
-                                    <td>{{ equipment_id }}</td>
-                                    <td>{{ equipment.get("name", "") }}</td>
-                                    <td>{{ equipment.get("category", "Not specified") }}</td>
+                                    <td>
+                                        <span class="record-id">
+                                            {{ equipment_id }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            {{ equipment.get("name", "") }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ equipment.get(
+                                            "category",
+                                            "Not specified"
+                                        ) }}
+                                    </td>
+
                                     <td>{{ equipment.get("quantity", 1) }}</td>
-                                    <td>{{ equipment.get("available_quantity", equipment.get("quantity", 1)) }}</td>
-                                    <td>{{ equipment.get("status", "available") }}</td>
+                                    <td>{{ available }}</td>
+
+                                    <td>
+                                        {% if available > 0 %}
+                                            <span class="status status-active">
+                                                Available
+                                            </span>
+                                        {% else %}
+                                            <span class="status status-overdue">
+                                                Unavailable
+                                            </span>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             {% else %}
-                <p>No equipment has been added.</p>
+                <div class="empty-state">
+                    <span>0</span>
+                    <h3>No equipment records</h3>
+                    <p>No equipment has been added to LabSync yet.</p>
+                </div>
             {% endif %}
         </section>
 
-        <section class="card">
-            <h2>My Booking Status</h2>
+        <section class="content-card">
+            <div class="card-heading">
+                <div>
+                    <span class="eyebrow">Request history</span>
+                    <h2>My bookings</h2>
+                </div>
+            </div>
 
             {% if booking_list %}
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Booking ID</th>
+                                <th>Booking</th>
                                 <th>Equipment</th>
                                 <th>Quantity</th>
-                                <th>Booking date</th>
+                                <th>Requested</th>
                                 <th>Return date</th>
                                 <th>Purpose</th>
                                 <th>Status</th>
-                                <th>Admin comment</th>
+                                <th>Staff comment</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {% for booking in booking_list %}
                                 <tr>
-                                    <td>{{ booking.get("booking_id", "") }}</td>
-                                    <td>{{ booking.get("equipment", "") }}</td>
-                                    <td>{{ booking.get("quantity", 1) }}</td>
-                                    <td>{{ booking.get("booking_date", "") }}</td>
-                                    <td>{{ booking.get("return_time", "") }}</td>
-                                    <td>{{ booking.get("purpose", "") }}</td>
                                     <td>
-                                        <span class="status status-{{ booking.get('status', '').lower() }}">
+                                        <span class="record-id">
+                                            {{ booking.get("booking_id", "") }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            {{ booking.get("equipment", "") }}
+                                        </strong>
+                                    </td>
+
+                                    <td>{{ booking.get("quantity", 1) }}</td>
+
+                                    <td>
+                                        {{ booking.get("booking_date", "") }}
+                                    </td>
+
+                                    <td>
+                                        {{ booking.get("return_time", "") }}
+                                    </td>
+
+                                    <td class="purpose-cell">
+                                        {{ booking.get("purpose", "") }}
+                                    </td>
+
+                                    <td>
+                                        <span
+                                            class="status status-{{ booking.get(
+                                                'status',
+                                                ''
+                                            ).lower() }}"
+                                        >
                                             {{ booking.get("status", "") }}
                                         </span>
                                     </td>
-                                    <td>{{ booking.get("admin_comment", "") or "No comment" }}</td>
+
+                                    <td>
+                                        {{ booking.get(
+                                            "admin_comment",
+                                            ""
+                                        ) or "No comment" }}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             {% else %}
-                <p>You have not submitted any booking requests.</p>
+                <div class="empty-state">
+                    <span>0</span>
+                    <h3>No booking requests</h3>
+                    <p>
+                        When you submit a request, its progress will appear
+                        here.
+                    </p>
+                </div>
             {% endif %}
         </section>
     </main>
+
+    <footer class="site-footer">
+        <div>
+            <strong>LabSync</strong>
+            <span>Ashesi University Laboratory Services</span>
+        </div>
+
+        <p>Student equipment booking and request tracking.</p>
+    </footer>
 </body>
 </html>
