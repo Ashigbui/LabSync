@@ -3,39 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LabSync</title>
+    <meta name="description" content="LabSync laboratory equipment booking system">
+    <title>LabSync | Ashesi University</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="landing-page">
-    <header>
-        <h1>LabSync</h1>
-        <p>Laboratory Equipment Booking System</p>
+    <header class="site-header">
+        <a href="{{ url_for('home') }}" class="brand">
+            <img
+                src="{{ url_for('static', filename='ashesi-logo.png') }}"
+                alt="Ashesi University"
+                class="brand-logo"
+            >
+
+            <div class="brand-text">
+                <span class="brand-name">LabSync</span>
+                <span class="brand-description">
+                    Laboratory Equipment Booking System
+                </span>
+            </div>
+        </a>
+
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a href="{{ url_for('login') }}" class="nav-link">Sign In</a>
+            <a href="{{ url_for('register') }}" class="nav-button">
+                Create Account
+            </a>
+        </nav>
     </header>
 
-    <main>
+    <main class="landing-main">
         {% if request.args.get("message") %}
-            <div class="message">{{ request.args.get("message") }}</div>
+            <div class="message">
+                {{ request.args.get("message") }}
+            </div>
         {% endif %}
 
-        <section class="card portal-section">
-            <h2>Welcome to LabSync</h2>
-            <p>Register with your Ashesi school email or sign in to access your assigned portal.</p>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="eyebrow">Ashesi Laboratory Services</span>
 
-            <div class="portal-options">
-                <a href="{{ url_for('register') }}" class="portal-card">
-                    <h3>Student Registration</h3>
-                    <p>Create a student account using an email address ending in @ashesi.edu.gh.</p>
-                    <span class="portal-button">Register</span>
-                </a>
+                <h1>
+                    Laboratory access,
+                    <span>made simple.</span>
+                </h1>
 
-                <a href="{{ url_for('login') }}" class="portal-card">
-                    <h3>Account Sign In</h3>
-                    <p>Students, administrators, and technicians sign in here to access the correct portal.</p>
-                    <span class="portal-button">Sign In</span>
-                </a>
+                <p class="hero-description">
+                    Discover available laboratory equipment, submit booking
+                    requests, track approvals, and manage returns from one
+                    secure platform.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{{ url_for('login') }}" class="primary-button">
+                        Sign In to LabSync
+                    </a>
+
+                    <a href="{{ url_for('register') }}" class="secondary-button">
+                        Create Student Account
+                    </a>
+                </div>
+
+                <p class="school-email-note">
+                    Student registration requires an
+                    <strong>@ashesi.edu.gh</strong> email address.
+                </p>
+            </div>
+
+            <aside class="hero-panel">
+                <div class="hero-panel-heading">
+                    <span class="panel-icon">LS</span>
+
+                    <div>
+                        <h2>One connected system</h2>
+                        <p>For students and laboratory staff</p>
+                    </div>
+                </div>
+
+                <div class="feature-list">
+                    <article class="feature-item">
+                        <span class="feature-number">01</span>
+
+                        <div>
+                            <h3>Find equipment</h3>
+                            <p>View quantities and availability in real time.</p>
+                        </div>
+                    </article>
+
+                    <article class="feature-item">
+                        <span class="feature-number">02</span>
+
+                        <div>
+                            <h3>Request a booking</h3>
+                            <p>Submit equipment requests for laboratory work.</p>
+                        </div>
+                    </article>
+
+                    <article class="feature-item">
+                        <span class="feature-number">03</span>
+
+                        <div>
+                            <h3>Track progress</h3>
+                            <p>See approvals, comments, returns, and status.</p>
+                        </div>
+                    </article>
+                </div>
+            </aside>
+        </section>
+
+        <section class="role-section">
+            <div class="section-heading">
+                <span class="eyebrow">Built for the Ashesi community</span>
+                <h2>The right workspace for every role</h2>
+            </div>
+
+            <div class="role-grid">
+                <article class="role-card">
+                    <div class="role-icon">ST</div>
+                    <h3>Students</h3>
+                    <p>
+                        Browse available equipment, submit requests, and follow
+                        each booking from pending approval to return.
+                    </p>
+
+                    <a href="{{ url_for('register') }}">
+                        Register as a student →
+                    </a>
+                </article>
+
+                <article class="role-card featured-role">
+                    <div class="role-icon">AT</div>
+                    <h3>Administrators & Technicians</h3>
+                    <p>
+                        Manage inventory, review requests, record returns, and
+                        keep laboratory operations organised.
+                    </p>
+
+                    <a href="{{ url_for('login') }}">
+                        Sign in to the staff portal →
+                    </a>
+                </article>
             </div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <div>
+            <strong>LabSync</strong>
+            <span>Ashesi University Laboratory Services</span>
+        </div>
+
+        <p>Designed to support safe and efficient laboratory access.</p>
+    </footer>
 </body>
 </html>
